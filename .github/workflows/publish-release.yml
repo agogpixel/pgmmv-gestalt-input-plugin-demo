@@ -1,0 +1,71 @@
+name: Publish Release
+on:
+  push:
+    branches-ignore:
+      - '**'
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+\+*'
+env:
+  PRIVATE_REGISTRY_URL: https://npm.pkg.github.com
+  GITHUB_TOKEN: ${{ secrets.GHP_TOKEN }}
+  ITCH_IO_STAGING_URI: /repos/agogpixel/itch-io-staging/actions/workflows/fetch-pgmmv-plugin-artifacts-and-commit.yml/dispatches
+  ITCH_IO_STAGING_INPUT: '{"ref":"main","inputs":{"payload":"{\"tag\":\"${{ github.ref_name }}\",\"name\":\"pgmmv-gestalt-input-plugin\"}"}}'
+jobs:
+  Build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Setup Dependencies
+        uses: ./.github/actions/setup-dependencies
+        with:
+          registry-url: ${{ env.PRIVATE_REGISTRY_URL }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GHP_TOKEN }}
+      - name: Build
+        run: npm run build
+        shell: bash
+      - name: Archive Build Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist
+          path: dist
+  Prepare-Release:
+    name: Prepare Release
+    runs-on: ubuntu-latest
+    needs: [Build]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Setup Dependencies
+        uses: ./.github/actions/setup-dependencies
+        with:
+          registry-url: ${{ env.PRIVATE_REGISTRY_URL }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GHP_TOKEN }}
+      - name: Fetch Build Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dist
+          path: dist
+      - name: Upload Build Artifacts To Release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: '${{ secrets.GHP_TOKEN }}'
+          file_glob: true
+          file: |
+            dist/*.pgmmv.zip
+          tag: '${{ github.ref }}'
+          prerelease: false
+  Update-Itch-Staging:
+    name: Update itch.io Staging
+    runs-on: ubuntu-latest
+    needs: [Prepare-Release]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Update itch.io Staging
+        run: gh api $ITCH_IO_STAGING_URI --input - <<< $ITCH_IO_STAGING_INPUT
+        shell: bash
