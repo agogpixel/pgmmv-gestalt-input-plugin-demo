@@ -8,6 +8,196 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./node_modules/@agogpixel/pgmmv-link-condition-support/src/json-logic/connective.js":
+/*!*******************************************************************************************!*\
+  !*** ./node_modules/@agogpixel/pgmmv-link-condition-support/src/json-logic/connective.js ***!
+  \*******************************************************************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.JsonLogicConnective = void 0;
+var JsonLogicConnective;
+(function (JsonLogicConnective) {
+    JsonLogicConnective["Not"] = "NOT";
+    JsonLogicConnective["And"] = "AND";
+    JsonLogicConnective["Or"] = "OR";
+    JsonLogicConnective["Nand"] = "NAND";
+    JsonLogicConnective["Nor"] = "NOR";
+    JsonLogicConnective["Xor"] = "XOR";
+    JsonLogicConnective["Xnor"] = "XNOR";
+})(JsonLogicConnective = exports.JsonLogicConnective || (exports.JsonLogicConnective = {}));
+//# sourceMappingURL=connective.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@agogpixel/pgmmv-link-condition-support/src/json-logic/create-clause-transform.js":
+/*!********************************************************************************************************!*\
+  !*** ./node_modules/@agogpixel/pgmmv-link-condition-support/src/json-logic/create-clause-transform.js ***!
+  \********************************************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.createJsonLogicClauseTransform = void 0;
+var connective_1 = __webpack_require__(/*! ./connective */ "./node_modules/@agogpixel/pgmmv-link-condition-support/src/json-logic/connective.js");
+function createJsonLogicClauseTransform(constraintFactory) {
+    return function transformJsonLogicClause(clause) {
+        var errors = [];
+        function errorResult() {
+            return false;
+        }
+        function parseJsonLogicClause(clause, path) {
+            if (Array.isArray(clause)) {
+                var result_1 = constraintFactory(clause);
+                if (typeof result_1 === 'string') {
+                    errors.push("".concat(path, ": ").concat(result_1));
+                    return errorResult;
+                }
+                return result_1;
+            }
+            if (typeof clause !== 'object' || clause === null) {
+                errors.push("".concat(path, ": Invalid JSON logic clause type; expected object"));
+                return errorResult;
+            }
+            var connectives = Object.keys(clause);
+            if (connectives.length !== 1) {
+                errors.push("".concat(path, ": Invalid JSON logic connective object; expected only one connective (object key), found ").concat(connectives.length));
+                return errorResult;
+            }
+            var connective = connectives[0];
+            var subClauses = clause[connective];
+            var currentPath = "".concat(path, ".").concat(connective);
+            if (!Array.isArray(subClauses) || subClauses.length < 1) {
+                errors.push("".concat(currentPath, ": Invalid JSON logic sub-clauses; expected array of length 1 or greater"));
+                return errorResult;
+            }
+            if (connective === connective_1.JsonLogicConnective.Not) {
+                if (subClauses.length > 1) {
+                    errors.push("".concat(currentPath, ": Invalid JSON logic sub-clause for ").concat(connective_1.JsonLogicConnective.Not, " connective; array of length 1 required"));
+                    return errorResult;
+                }
+                var innerConstraint_1 = parseJsonLogicClause(subClauses[0], "".concat(currentPath, "[0]"));
+                return function () {
+                    var args = [];
+                    for (var _i = 0; _i < arguments.length; _i++) {
+                        args[_i] = arguments[_i];
+                    }
+                    return !innerConstraint_1.apply(void 0, args);
+                };
+            }
+            if (subClauses.length < 2) {
+                errors.push("".concat(currentPath, ": Invalid JSON logic sub-clause for connective; expected array of length 2 or greater"));
+                return errorResult;
+            }
+            var subConstraints = [];
+            switch (connective) {
+                case connective_1.JsonLogicConnective.And:
+                case connective_1.JsonLogicConnective.Or:
+                case connective_1.JsonLogicConnective.Nand:
+                case connective_1.JsonLogicConnective.Nor:
+                case connective_1.JsonLogicConnective.Xor:
+                case connective_1.JsonLogicConnective.Xnor:
+                    for (var i = 0; i < subClauses.length; ++i) {
+                        subConstraints.push(parseJsonLogicClause(subClauses[i], "".concat(currentPath, "[").concat(i, "]")));
+                    }
+                    break;
+                default:
+                    errors.push("".concat(currentPath, ": Unknown connective: ").concat(connective));
+                    return errorResult;
+            }
+            switch (connective) {
+                case connective_1.JsonLogicConnective.And:
+                    return function () {
+                        var args = [];
+                        for (var _i = 0; _i < arguments.length; _i++) {
+                            args[_i] = arguments[_i];
+                        }
+                        for (var i = 0; i < subConstraints.length; ++i) {
+                            if (!subConstraints[i].apply(subConstraints, args)) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    };
+                case connective_1.JsonLogicConnective.Or:
+                    return function () {
+                        var args = [];
+                        for (var _i = 0; _i < arguments.length; _i++) {
+                            args[_i] = arguments[_i];
+                        }
+                        for (var i = 0; i < subConstraints.length; ++i) {
+                            if (subConstraints[i].apply(subConstraints, args)) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    };
+                case connective_1.JsonLogicConnective.Nand:
+                    return function () {
+                        var args = [];
+                        for (var _i = 0; _i < arguments.length; _i++) {
+                            args[_i] = arguments[_i];
+                        }
+                        for (var i = 0; i < subConstraints.length; ++i) {
+                            if (!subConstraints[i].apply(subConstraints, args)) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    };
+                case connective_1.JsonLogicConnective.Nor:
+                    return function () {
+                        var args = [];
+                        for (var _i = 0; _i < arguments.length; _i++) {
+                            args[_i] = arguments[_i];
+                        }
+                        for (var i = 0; i < subConstraints.length; ++i) {
+                            if (subConstraints[i].apply(subConstraints, args)) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    };
+                case connective_1.JsonLogicConnective.Xor:
+                    return function () {
+                        var args = [];
+                        for (var _i = 0; _i < arguments.length; _i++) {
+                            args[_i] = arguments[_i];
+                        }
+                        var trueCount = 0;
+                        for (var i = 0; i < subConstraints.length; ++i) {
+                            if (subConstraints[i].apply(subConstraints, args)) {
+                                ++trueCount;
+                            }
+                        }
+                        return trueCount % 2 === 1;
+                    };
+                case connective_1.JsonLogicConnective.Xnor:
+                    return function () {
+                        var args = [];
+                        for (var _i = 0; _i < arguments.length; _i++) {
+                            args[_i] = arguments[_i];
+                        }
+                        var trueCount = 0;
+                        for (var i = 0; i < subConstraints.length; ++i) {
+                            if (subConstraints[i].apply(subConstraints, args)) {
+                                ++trueCount;
+                            }
+                        }
+                        return trueCount % 2 === 0;
+                    };
+            }
+        }
+        var result = parseJsonLogicClause(clause, 'ROOT');
+        return !errors.length ? result : errors;
+    };
+}
+exports.createJsonLogicClauseTransform = createJsonLogicClauseTransform;
+//# sourceMappingURL=create-clause-transform.js.map
+
+/***/ }),
+
 /***/ "./node_modules/@agogpixel/pgmmv-logging-support/src/create-logger.js":
 /*!****************************************************************************!*\
   !*** ./node_modules/@agogpixel/pgmmv-logging-support/src/create-logger.js ***!
@@ -1509,7 +1699,7 @@ var get_object_instance_1 = __webpack_require__(/*! @agogpixel/pgmmv-object-supp
 var get_parent_object_instance_1 = __webpack_require__(/*! @agogpixel/pgmmv-object-support/src/object-instance/get-parent-object-instance */ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/get-parent-object-instance.js");
 var create_plugin_1 = __webpack_require__(/*! @agogpixel/pgmmv-plugin-support/src/create-plugin */ "./node_modules/@agogpixel/pgmmv-plugin-support/src/create-plugin.js");
 var create_cache_1 = __webpack_require__(/*! @agogpixel/pgmmv-resource-support/src/cache/create-cache */ "./node_modules/@agogpixel/pgmmv-resource-support/src/cache/create-cache.js");
-var input_condition_1 = __webpack_require__(/*! ./input-condition */ "./src/input-condition.ts");
+var input_condition_1 = __webpack_require__(/*! ./input-condition */ "./src/input-condition/index.ts");
 var link_conditions_1 = __webpack_require__(/*! ./link-conditions */ "./src/link-conditions.ts");
 var locale_1 = __importDefault(__webpack_require__(/*! ./locale */ "./src/locale/index.ts"));
 /**
@@ -1577,10 +1767,9 @@ function createGestaltInputPlugin() {
             }
         }
         var intermediate = JSON.parse(json);
-        var result = (0, input_condition_1.validateInputConditionKeyJsonClause)(intermediate);
-        if (typeof result === 'string') {
-            logger.error("parseInputCondition ".concat(identifier, ": Invalid input condition JSON: ").concat(result));
-            logger.error(intermediate);
+        var result = (0, input_condition_1.transformInputClause)(intermediate);
+        if (Array.isArray(result)) {
+            logger.error("parseInputCondition ".concat(identifier, ": Invalid JSON logic detected:\n").concat(result.join('\n  - ')));
             var warningLogged_1 = false;
             return [
                 function () {
@@ -1593,13 +1782,7 @@ function createGestaltInputPlugin() {
                 fallback
             ];
         }
-        var condition = (0, input_condition_1.transformInputConditionKeyJsonClause)(intermediate);
-        return [
-            function (controllerId) {
-                return condition(controllerId);
-            },
-            fallback
-        ];
+        return [result, fallback];
     }
     /**
      *
@@ -1708,166 +1891,246 @@ exports.createGestaltInputPlugin = createGestaltInputPlugin;
 
 /***/ }),
 
-/***/ "./src/input-condition.ts":
-/*!********************************!*\
-  !*** ./src/input-condition.ts ***!
-  \********************************/
+/***/ "./src/input-condition/controller-constant-prefix.ts":
+/*!***********************************************************!*\
+  !*** ./src/input-condition/controller-constant-prefix.ts ***!
+  \***********************************************************/
 /***/ (function(__unused_webpack_module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.transformInputConditionKeyJsonClause = exports.validateInputConditionKeyJsonClause = void 0;
+exports.ControllerConstantPrefix = void 0;
+/**
+ *
+ */
 var ControllerConstantPrefix;
 (function (ControllerConstantPrefix) {
+    /**
+     *
+     */
     ControllerConstantPrefix["Op"] = "OperationKey";
+    /**
+     *
+     */
     ControllerConstantPrefix["Pc"] = "ReservedKeyCodePc_";
-})(ControllerConstantPrefix || (ControllerConstantPrefix = {}));
-var InputConditionKeyPrefix;
-(function (InputConditionKeyPrefix) {
-    InputConditionKeyPrefix["Op"] = "Op";
-    InputConditionKeyPrefix["Pc"] = "Pc";
-})(InputConditionKeyPrefix || (InputConditionKeyPrefix = {}));
-var InputConditionKey;
-(function (InputConditionKey) {
-    InputConditionKey["Op_A"] = "Op_A";
-    InputConditionKey["Op_B"] = "Op_B";
-    InputConditionKey["Op_X"] = "Op_X";
-    InputConditionKey["Op_Y"] = "Op_Y";
-    InputConditionKey["Op_R1"] = "Op_R1";
-    InputConditionKey["Op_R2"] = "Op_R2";
-    InputConditionKey["Op_L1"] = "Op_L1";
-    InputConditionKey["Op_L2"] = "Op_L2";
-    InputConditionKey["Op_Up"] = "Op_Up";
-    InputConditionKey["Op_Down"] = "Op_Down";
-    InputConditionKey["Op_Left"] = "Op_Left";
-    InputConditionKey["Op_Right"] = "Op_Right";
-    InputConditionKey["Op_LeftStickUp"] = "Op_LeftStickUp";
-    InputConditionKey["Op_LeftStickDown"] = "Op_LeftStickDown";
-    InputConditionKey["Op_LeftStickLeft"] = "Op_LeftStickLeft";
-    InputConditionKey["Op_LeftStickRight"] = "Op_LeftStickRight";
-    InputConditionKey["Op_RightStickUp"] = "Op_RightStickUp";
-    InputConditionKey["Op_RightStickDown"] = "Op_RightStickDown";
-    InputConditionKey["Op_RightStickLeft"] = "Op_RightStickLeft";
-    InputConditionKey["Op_RightStickRight"] = "Op_RightStickRight";
-    InputConditionKey["Op_LeftClick"] = "Op_LeftClick";
-    InputConditionKey["Op_RightClick"] = "Op_RightClick";
-    InputConditionKey["Op_Start"] = "Op_Start";
-    InputConditionKey["Op_Select"] = "Op_Select";
-    InputConditionKey["Op_Home"] = "Op_Home";
-    InputConditionKey["Op_Ok"] = "Op_Ok";
-    InputConditionKey["Op_Cancel"] = "Op_Cancel";
-    InputConditionKey["Pc_W"] = "Pc_W";
-    InputConditionKey["Pc_A"] = "Pc_A";
-    InputConditionKey["Pc_S"] = "Pc_S";
-    InputConditionKey["Pc_D"] = "Pc_D";
-    InputConditionKey["Pc_LeftClick"] = "Pc_LeftClick";
-    InputConditionKey["Pc_RightClick"] = "Pc_RightClick";
-    InputConditionKey["Pc_Up"] = "Pc_Up";
-    InputConditionKey["Pc_Right"] = "Pc_Right";
-    InputConditionKey["Pc_Down"] = "Pc_Down";
-    InputConditionKey["Pc_Left"] = "Pc_Left";
-    InputConditionKey["Pc_MiddleClick"] = "Pc_MiddleClick";
-    InputConditionKey["Pc_WheelUp"] = "Pc_WheelUp";
-    InputConditionKey["Pc_WhellDown"] = "Pc_WhellDown";
-    InputConditionKey["Pc_MousePointer"] = "Pc_MousePointer";
-})(InputConditionKey || (InputConditionKey = {}));
-function validateInputConditionKeyJsonPredicate(predicate) {
-    if (!Array.isArray(predicate)) {
-        return 'Input condition predicate must be of type array';
+})(ControllerConstantPrefix = exports.ControllerConstantPrefix || (exports.ControllerConstantPrefix = {}));
+
+
+/***/ }),
+
+/***/ "./src/input-condition/index.ts":
+/*!**************************************!*\
+  !*** ./src/input-condition/index.ts ***!
+  \**************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__webpack_require__(/*! ./controller-constant-prefix */ "./src/input-condition/controller-constant-prefix.ts"), exports);
+__exportStar(__webpack_require__(/*! ./input-key */ "./src/input-condition/input-key.ts"), exports);
+__exportStar(__webpack_require__(/*! ./input-key-prefix */ "./src/input-condition/input-key-prefix.ts"), exports);
+__exportStar(__webpack_require__(/*! ./transform-clause */ "./src/input-condition/transform-clause.ts"), exports);
+__exportStar(__webpack_require__(/*! ./transform-input-condition */ "./src/input-condition/transform-input-condition.ts"), exports);
+__exportStar(__webpack_require__(/*! ./validate-input-condition */ "./src/input-condition/validate-input-condition.ts"), exports);
+
+
+/***/ }),
+
+/***/ "./src/input-condition/input-key-prefix.ts":
+/*!*************************************************!*\
+  !*** ./src/input-condition/input-key-prefix.ts ***!
+  \*************************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.InputKeyPrefix = void 0;
+/**
+ *
+ */
+var InputKeyPrefix;
+(function (InputKeyPrefix) {
+    /**
+     *
+     */
+    InputKeyPrefix["Op"] = "Op";
+    /**
+     *
+     */
+    InputKeyPrefix["Pc"] = "Pc";
+})(InputKeyPrefix = exports.InputKeyPrefix || (exports.InputKeyPrefix = {}));
+
+
+/***/ }),
+
+/***/ "./src/input-condition/input-key.ts":
+/*!******************************************!*\
+  !*** ./src/input-condition/input-key.ts ***!
+  \******************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.InputKey = void 0;
+/**
+ *
+ */
+var InputKey;
+(function (InputKey) {
+    InputKey["Op_A"] = "Op_A";
+    InputKey["Op_B"] = "Op_B";
+    InputKey["Op_X"] = "Op_X";
+    InputKey["Op_Y"] = "Op_Y";
+    InputKey["Op_R1"] = "Op_R1";
+    InputKey["Op_R2"] = "Op_R2";
+    InputKey["Op_L1"] = "Op_L1";
+    InputKey["Op_L2"] = "Op_L2";
+    InputKey["Op_Up"] = "Op_Up";
+    InputKey["Op_Down"] = "Op_Down";
+    InputKey["Op_Left"] = "Op_Left";
+    InputKey["Op_Right"] = "Op_Right";
+    InputKey["Op_LeftStickUp"] = "Op_LeftStickUp";
+    InputKey["Op_LeftStickDown"] = "Op_LeftStickDown";
+    InputKey["Op_LeftStickLeft"] = "Op_LeftStickLeft";
+    InputKey["Op_LeftStickRight"] = "Op_LeftStickRight";
+    InputKey["Op_RightStickUp"] = "Op_RightStickUp";
+    InputKey["Op_RightStickDown"] = "Op_RightStickDown";
+    InputKey["Op_RightStickLeft"] = "Op_RightStickLeft";
+    InputKey["Op_RightStickRight"] = "Op_RightStickRight";
+    InputKey["Op_LeftClick"] = "Op_LeftClick";
+    InputKey["Op_RightClick"] = "Op_RightClick";
+    InputKey["Op_Start"] = "Op_Start";
+    InputKey["Op_Select"] = "Op_Select";
+    InputKey["Op_Home"] = "Op_Home";
+    InputKey["Op_Ok"] = "Op_Ok";
+    InputKey["Op_Cancel"] = "Op_Cancel";
+    InputKey["Pc_W"] = "Pc_W";
+    InputKey["Pc_A"] = "Pc_A";
+    InputKey["Pc_S"] = "Pc_S";
+    InputKey["Pc_D"] = "Pc_D";
+    InputKey["Pc_LeftClick"] = "Pc_LeftClick";
+    InputKey["Pc_RightClick"] = "Pc_RightClick";
+    InputKey["Pc_Up"] = "Pc_Up";
+    InputKey["Pc_Right"] = "Pc_Right";
+    InputKey["Pc_Down"] = "Pc_Down";
+    InputKey["Pc_Left"] = "Pc_Left";
+    InputKey["Pc_MiddleClick"] = "Pc_MiddleClick";
+    InputKey["Pc_WheelUp"] = "Pc_WheelUp";
+    InputKey["Pc_WhellDown"] = "Pc_WhellDown";
+    InputKey["Pc_MousePointer"] = "Pc_MousePointer";
+})(InputKey = exports.InputKey || (exports.InputKey = {}));
+
+
+/***/ }),
+
+/***/ "./src/input-condition/transform-clause.ts":
+/*!*************************************************!*\
+  !*** ./src/input-condition/transform-clause.ts ***!
+  \*************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.transformInputClause = void 0;
+var create_clause_transform_1 = __webpack_require__(/*! @agogpixel/pgmmv-link-condition-support/src/json-logic/create-clause-transform */ "./node_modules/@agogpixel/pgmmv-link-condition-support/src/json-logic/create-clause-transform.js");
+var transform_input_condition_1 = __webpack_require__(/*! ./transform-input-condition */ "./src/input-condition/transform-input-condition.ts");
+var validate_input_condition_1 = __webpack_require__(/*! ./validate-input-condition */ "./src/input-condition/validate-input-condition.ts");
+/**
+ *
+ */
+exports.transformInputClause = (0, create_clause_transform_1.createJsonLogicClauseTransform)(function (condition) {
+    var result = (0, validate_input_condition_1.validateInputCondition)(condition);
+    if (result !== true) {
+        return result;
     }
-    if (predicate.length !== 2) {
-        return 'Input condition predicate must be of type array with exact length of 2';
-    }
-    if (typeof predicate[0] !== 'string') {
-        return 'Input condition predicate must be of type array with first element of type string';
-    }
-    if (typeof InputConditionKey[predicate[0]] !== 'string') {
-        return "Input condition predicate must be of type array with valid first element: '".concat(predicate[0], "' is invalid");
-    }
-    if (typeof predicate[1] !== 'boolean') {
-        return 'Input condition predicate must be of type array with second element of type boolean';
-    }
-    return true;
-}
-function validateInputConditionKeyJsonClause(clause) {
-    if (Array.isArray(clause)) {
-        return validateInputConditionKeyJsonPredicate(clause);
-    }
-    if (typeof clause !== 'object') {
-        return 'Input condition clause must be of type object';
-    }
-    if (clause === null) {
-        return 'Input condition clause must not be null';
-    }
-    if (Object.keys(clause).length !== 1) {
-        return 'Input condition clause must have exactly one key';
-    }
-    var orClause = clause.OR;
-    var andClause = clause.AND;
-    if (!Array.isArray(orClause) && !Array.isArray(andClause)) {
-        return "Input condition clause key must be one of 'OR' or 'AND'";
-    }
-    var resolvedClause = Array.isArray(orClause) ? orClause : andClause;
-    if (!resolvedClause.length) {
-        return 'Input condition clause key must map to a value of type array';
-    }
-    for (var i = 0; i < resolvedClause.length; ++i) {
-        var result = validateInputConditionKeyJsonClause(resolvedClause[i]);
-        if (typeof result === 'string') {
-            return result;
-        }
-    }
-    return true;
-}
-exports.validateInputConditionKeyJsonClause = validateInputConditionKeyJsonClause;
-function transformInputConditionKeyJsonPredicate(predicate) {
-    var key = predicate[0];
-    var condition = predicate[1];
-    var keyParts = key.split('_');
-    var propPrefix = keyParts[0] === InputConditionKeyPrefix.Pc ? ControllerConstantPrefix.Pc : ControllerConstantPrefix.Op;
-    var prop = "".concat(propPrefix).concat(keyParts[1]);
-    if (keyParts[0] === InputConditionKeyPrefix.Pc) {
+    return (0, transform_input_condition_1.transformInputCondition)(condition);
+});
+
+
+/***/ }),
+
+/***/ "./src/input-condition/transform-input-condition.ts":
+/*!**********************************************************!*\
+  !*** ./src/input-condition/transform-input-condition.ts ***!
+  \**********************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.transformInputCondition = void 0;
+var controller_constant_prefix_1 = __webpack_require__(/*! ./controller-constant-prefix */ "./src/input-condition/controller-constant-prefix.ts");
+var input_key_prefix_1 = __webpack_require__(/*! ./input-key-prefix */ "./src/input-condition/input-key-prefix.ts");
+/**
+ *
+ * @param condition
+ * @returns
+ */
+function transformInputCondition(condition) {
+    var inputKey = condition[0];
+    var desiredValue = condition[1];
+    var inputKeyParts = inputKey.split('_');
+    var propPrefix = inputKeyParts[0] === input_key_prefix_1.InputKeyPrefix.Pc ? controller_constant_prefix_1.ControllerConstantPrefix.Pc : controller_constant_prefix_1.ControllerConstantPrefix.Op;
+    var prop = "".concat(propPrefix).concat(inputKeyParts[1]);
+    if (inputKeyParts[0] === input_key_prefix_1.InputKeyPrefix.Pc) {
         return function (controllerId) {
             var pressed = !!Agtk.controllers.getKeyValue(controllerId, Agtk.constants.controllers[prop]);
-            return condition ? pressed : !pressed;
+            return desiredValue ? pressed : !pressed;
         };
     }
     return function (controllerId) {
         var pressed = Agtk.controllers.getOperationKeyPressed(controllerId, Agtk.constants.controllers[prop]);
-        return condition ? pressed : !pressed;
+        return desiredValue ? pressed : !pressed;
     };
 }
-function transformInputConditionKeyJsonClause(clause) {
-    if (Array.isArray(clause)) {
-        return transformInputConditionKeyJsonPredicate(clause);
+exports.transformInputCondition = transformInputCondition;
+
+
+/***/ }),
+
+/***/ "./src/input-condition/validate-input-condition.ts":
+/*!*********************************************************!*\
+  !*** ./src/input-condition/validate-input-condition.ts ***!
+  \*********************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.validateInputCondition = void 0;
+var input_key_1 = __webpack_require__(/*! ./input-key */ "./src/input-condition/input-key.ts");
+/**
+ *
+ * @param condition
+ * @returns
+ */
+function validateInputCondition(condition) {
+    if (!Array.isArray(condition)) {
+        return 'Input condition condition must be of type array';
     }
-    var orClause = clause.OR;
-    var andClause = clause.AND;
-    var resolvedClause = Array.isArray(orClause) ? orClause : andClause;
-    var childClauses = [];
-    for (var i = 0; i < resolvedClause.length; ++i) {
-        childClauses.push(transformInputConditionKeyJsonClause(resolvedClause[i]));
+    if (condition.length !== 2) {
+        return 'Input condition condition must be of type array with exact length of 2';
     }
-    if (Array.isArray(orClause)) {
-        return function (controllerId) {
-            for (var i = 0; i < childClauses.length; ++i) {
-                if (childClauses[i](controllerId)) {
-                    return true;
-                }
-            }
-            return false;
-        };
+    if (typeof condition[0] !== 'string') {
+        return 'Input condition condition must be of type array with first element of type string';
     }
-    return function (controllerId) {
-        for (var i = 0; i < childClauses.length; ++i) {
-            if (!childClauses[i](controllerId)) {
-                return false;
-            }
-        }
-        return true;
-    };
+    if (typeof input_key_1.InputKey[condition[0]] !== 'string') {
+        return "Input condition condition must be of type array with valid first element: '".concat(condition[0], "' is invalid");
+    }
+    if (typeof condition[1] !== 'boolean') {
+        return 'Input condition condition must be of type array with second element of type boolean';
+    }
+    return true;
 }
-exports.transformInputConditionKeyJsonClause = transformInputConditionKeyJsonClause;
+exports.validateInputCondition = validateInputCondition;
 
 
 /***/ }),
