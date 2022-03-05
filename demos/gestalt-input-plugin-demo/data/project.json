@@ -392,9 +392,9 @@
 		{"id":1,"name":"font6x10","filename":"img/001.png","srcFilename":"","horzDivCount":1,"vertDivCount":1,			"folder": false},
 		{"id":2,"name":"font8x8","filename":"img/002.png","srcFilename":"","horzDivCount":1,"vertDivCount":1,			"folder": false},
 		{"id":3,"name":"font12x12","filename":"img/003.png","srcFilename":"","horzDivCount":1,"vertDivCount":1,			"folder": false},
-		{"id":4,"name":"arrow_tilesheetA","filename":"img/004.png","srcFilename":"D:/agogpixel/pgmmv-ts/assets/images/arrow_tilesheetA.png","horzDivCount":8,"vertDivCount":1,			"folder": false},
-		{"id":5,"name":"arrow_tilesheetB","filename":"img/005.png","srcFilename":"D:/agogpixel/pgmmv-ts/assets/images/arrow_tilesheetB.png","horzDivCount":8,"vertDivCount":1,			"folder": false},
-		{"id":6,"name":"blank16x16","filename":"img/006.png","srcFilename":"D:/agogpixel/pgmmv-ts/assets/images/blank16x16.png","horzDivCount":1,"vertDivCount":1,			"folder": false}
+		{"id":4,"name":"arrow_tilesheetA","filename":"img/004.png","srcFilename":"D:/agogpixel/pgmmv-gestalt-input-plugin-demo/assets/arrow_tilesheetA.png","horzDivCount":8,"vertDivCount":1,			"folder": false},
+		{"id":5,"name":"arrow_tilesheetB","filename":"img/005.png","srcFilename":"D:/agogpixel/pgmmv-gestalt-input-plugin-demo/assets/arrow_tilesheetB.png","horzDivCount":8,"vertDivCount":1,			"folder": false},
+		{"id":6,"name":"blank16x16","filename":"img/006.png","srcFilename":"D:/agogpixel/pgmmv-gestalt-input-plugin-demo/assets/blank16x16.png","horzDivCount":1,"vertDivCount":1,			"folder": false}
 	],
 	"fontList": [
 				{
@@ -1044,7 +1044,7 @@
 	"inputConditionList": [  ],
 	"linkConditionList": [  ],
 	"memo": "",
-	"coordList": [ [ -12, 171 ], [ -12, 265 ] ],
+	"coordList": [ [ -11, 171 ], [ -12, 265 ] ],
 	"endPointFactor": [ -1, -1 ],
 	"visible": false,
 	"num": 1,
@@ -12355,7 +12355,7 @@
 					"id": 1,
 					"name": "Gestalt Input",
 					"filename": "plugins/001.js",
-					"srcFilename": "D:/agogpixel/pgmmv-ts/dist/gestalt-input-plugin/gestalt-input-plugin-0.0.0.pgmmv.js",
+					"srcFilename": "D:/agogpixel/pgmmv-gestalt-input-plugin-demo/assets/gestalt-input-plugin-0.1.0-dev.pgmmv.js",
 					"enabled": true,
 					"internalJson": {},
 					"paramValueJson": [],
