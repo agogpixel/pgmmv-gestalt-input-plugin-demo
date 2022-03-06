@@ -12355,7 +12355,7 @@
 					"id": 1,
 					"name": "Gestalt Input",
 					"filename": "plugins/001.js",
-					"srcFilename": "D:/agogpixel/pgmmv-gestalt-input-plugin-demo/assets/gestalt-input-plugin-0.1.0-dev.pgmmv.js",
+					"srcFilename": "D:/agogpixel/pgmmv-gestalt-input-plugin-demo/assets/gestalt-input-plugin-0.1.0.pgmmv.js",
 					"enabled": true,
 					"internalJson": {},
 					"paramValueJson": [],
