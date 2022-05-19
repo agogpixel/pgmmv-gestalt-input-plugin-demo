@@ -1,9 +1,8 @@
 /**
- * (MANUAL)
  * Copyright 2022 Tristan Bonsor - All Rights Reserved.
- *
+ * 
  * This file, and its originating project files, are released under the MIT license: https://github.com/agogpixel/pgmmv-gestalt-input-plugin/blob/main/LICENSE
- *
+ * 
  * For more information, please see:
  *  - Github Repository: https://github.com/agogpixel/pgmmv-gestalt-input-plugin
  *  - Published Builds: https://agogpixel.itch.io/pgmmv-gestalt-input-plugin
@@ -2576,7 +2575,7 @@ module.exports = JSON.parse('{"PLUGIN_NAME":"Gestalt Input","PLUGIN_DESCRIPTION"
 /************************************************************************/
 /******/ 	// The module cache
 /******/ 	var __webpack_module_cache__ = {};
-/******/
+/******/ 	
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
@@ -2590,14 +2589,14 @@ module.exports = JSON.parse('{"PLUGIN_NAME":"Gestalt Input","PLUGIN_DESCRIPTION"
 /******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
-/******/
+/******/ 	
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
+/******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/
+/******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
