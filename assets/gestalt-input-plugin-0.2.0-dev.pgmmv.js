@@ -5,7 +5,7 @@
  * 
  * For more information, please see:
  *  - Github Repository: https://github.com/agogpixel/pgmmv-gestalt-input-plugin
- *  - Published Builds: https://agogpixel.itch.io/pgmmv-gestalt-input-plugin
+ *  - Published Builds & Usage: https://agogpixel.itch.io/pgmmv-gestalt-input-plugin
  *//******/ (function() { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
