@@ -1,46 +1,1106 @@
 /**
- * Gestalt Input Plugin for Pixel Game Maker MV.
- * Copyright 2022 AgogPixel - All Rights Reserved.
- * Implemented by kidthales <kidthales@agogpixel.com>
- * This file is released under CC BY-ND 4.0 license: https://creativecommons.org/licenses/by-nd/4.0/
- */
-/******/ (function() { // webpackBootstrap
+ * (MANUAL)
+ * Copyright 2022 Tristan Bonsor - All Rights Reserved.
+ *
+ * This file, and its originating project files, are released under the MIT license: https://github.com/agogpixel/pgmmv-gestalt-input-plugin/blob/main/LICENSE
+ *
+ * For more information, please see:
+ *  - Github Repository: https://github.com/agogpixel/pgmmv-gestalt-input-plugin
+ *  - Published Builds: https://agogpixel.itch.io/pgmmv-gestalt-input-plugin
+ *//******/ (function() { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./node_modules/@agogpixel/pgmmv-link-condition-support/src/json-logic/connective.js":
-/*!*******************************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-link-condition-support/src/json-logic/connective.js ***!
-  \*******************************************************************************************/
+/***/ "./node_modules/@agogpixel/pgmmv-logging-support/src/create-logger.function.js":
+/*!*************************************************************************************!*\
+  !*** ./node_modules/@agogpixel/pgmmv-logging-support/src/create-logger.function.js ***!
+  \*************************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.createLogger = exports.jsonIndentSizeMax = exports.jsonIndentSizeMin = exports.defaultJsonStringifyFunctions = exports.defaultJsonIndentSize = void 0;
+/**
+ * Exports create logger function & various defaults.
+ *
+ * @module create-logger.function
+ */
+var get_unix_timestamp_function_1 = __webpack_require__(/*! @agogpixel/pgmmv-resource-support/src/time/get-unix-timestamp.function */ "./node_modules/@agogpixel/pgmmv-resource-support/src/time/get-unix-timestamp.function.js");
+var to_json_function_1 = __webpack_require__(/*! @agogpixel/pgmmv-resource-support/src/json/to-json.function */ "./node_modules/@agogpixel/pgmmv-resource-support/src/json/to-json.function.js");
+var log_level_enum_1 = __webpack_require__(/*! ./log-level.enum */ "./node_modules/@agogpixel/pgmmv-logging-support/src/log-level.enum.js");
+////////////////////////////////////////////////////////////////////////////////
+// Public Static Properties
+////////////////////////////////////////////////////////////////////////////////
+/**
+ * Default JSON indent size.
+ */
+exports.defaultJsonIndentSize = 2;
+/**
+ * Default JSON stringify functions flag state.
+ */
+exports.defaultJsonStringifyFunctions = false;
+/**
+ * Minimum allowed JSON indent size value.
+ */
+exports.jsonIndentSizeMin = 0;
+/**
+ * Maximum allowed JSON indent size value.
+ */
+exports.jsonIndentSizeMax = 8;
+////////////////////////////////////////////////////////////////////////////////
+// Private Static Properties
+////////////////////////////////////////////////////////////////////////////////
+// None.
+////////////////////////////////////////////////////////////////////////////////
+// Public Static Methods
+////////////////////////////////////////////////////////////////////////////////
+/**
+ * Create object instance that conforms to {@link Logger} API.
+ *
+ * @param config Logger configuration.
+ * @param internal Provide an object to 'inherit' a reference to the logger's
+ * internal {@link LoggerProtectedApi} implementation.
+ * @returns An object instance that provides a base implementation for a
+ * {@link Logger} API.
+ */
+function createLogger(config, internal) {
+    var _a;
+    // Public API container.
+    var self = {};
+    // Protected API container.
+    var internalApi = internal || {};
+    //////////////////////////////////////////////////////////////////////////////
+    // Private Properties
+    //////////////////////////////////////////////////////////////////////////////
+    // None.
+    //////////////////////////////////////////////////////////////////////////////
+    // Private Methods
+    //////////////////////////////////////////////////////////////////////////////
+    // None.
+    //////////////////////////////////////////////////////////////////////////////
+    // Protected Properties
+    //////////////////////////////////////////////////////////////////////////////
+    internalApi.logLevel = config.logLevel || log_level_enum_1.LogLevel.Info;
+    internalApi.jsonIndentSize =
+        typeof config.jsonIndentSize !== 'number'
+            ? exports.defaultJsonIndentSize
+            : cc.clampf(config.jsonIndentSize, exports.jsonIndentSizeMin, exports.jsonIndentSizeMax);
+    internalApi.jsonStringifyFunctions = !!config.jsonStringifyFunctions || exports.defaultJsonStringifyFunctions;
+    internalApi.logLevelMap = config.logLevelMap || (_a = {},
+        _a[log_level_enum_1.LogLevel.Debug] = log_level_enum_1.LogLevel[log_level_enum_1.LogLevel.Debug],
+        _a[log_level_enum_1.LogLevel.Info] = log_level_enum_1.LogLevel[log_level_enum_1.LogLevel.Info],
+        _a[log_level_enum_1.LogLevel.Warn] = log_level_enum_1.LogLevel[log_level_enum_1.LogLevel.Warn],
+        _a[log_level_enum_1.LogLevel.Error] = log_level_enum_1.LogLevel[log_level_enum_1.LogLevel.Error],
+        _a[log_level_enum_1.LogLevel.Fatal] = log_level_enum_1.LogLevel[log_level_enum_1.LogLevel.Fatal],
+        _a);
+    //////////////////////////////////////////////////////////////////////////////
+    // Protected Methods
+    //////////////////////////////////////////////////////////////////////////////
+    internalApi.runtimeLog = config.runtimeLog || Agtk.log;
+    //////////////////////////////////////////////////////////////////////////////
+    // Public Properties
+    //////////////////////////////////////////////////////////////////////////////
+    // None.
+    //////////////////////////////////////////////////////////////////////////////
+    // Public Methods
+    //////////////////////////////////////////////////////////////////////////////
+    self.log = function (data, level) {
+        if (typeof level !== 'string' && typeof level !== 'number') {
+            internalApi.runtimeLog(typeof data === 'string'
+                ? data
+                : (0, to_json_function_1.toJson)(data, internalApi.jsonIndentSize, internalApi.jsonStringifyFunctions));
+            return;
+        }
+        var logLevel = typeof level === 'string' ? log_level_enum_1.LogLevel[level] : level;
+        if (logLevel < internalApi.logLevel) {
+            return;
+        }
+        var message = typeof data === 'string' ? data : (0, to_json_function_1.toJson)(data, internalApi.jsonIndentSize, internalApi.jsonStringifyFunctions);
+        var messageLog = "[".concat((0, get_unix_timestamp_function_1.getUnixTimestamp)(), "] ").concat(internalApi.logLevelMap[logLevel], ": ").concat(message);
+        internalApi.runtimeLog(messageLog);
+    };
+    self.debug = function (data) {
+        self.log(data, log_level_enum_1.LogLevel.Debug);
+    };
+    self.info = function (data) {
+        self.log(data, log_level_enum_1.LogLevel.Info);
+    };
+    self.warn = function (data) {
+        self.log(data, log_level_enum_1.LogLevel.Warn);
+    };
+    self.error = function (data) {
+        self.log(data, log_level_enum_1.LogLevel.Error);
+    };
+    self.fatal = function (data) {
+        self.log(data, log_level_enum_1.LogLevel.Fatal);
+    };
+    self.getLogLevel = function () {
+        return internalApi.logLevel;
+    };
+    self.setLogLevel = function (level) {
+        internalApi.logLevel = level;
+        return self;
+    };
+    self.getRuntimeLog = function () {
+        return internalApi.runtimeLog;
+    };
+    self.setRuntimeLog = function (log) {
+        internalApi.runtimeLog = log;
+        return self;
+    };
+    self.getJsonIndentSize = function () {
+        return internalApi.jsonIndentSize;
+    };
+    self.setJsonIndentSize = function (size) {
+        internalApi.jsonIndentSize = cc.clampf(size, exports.jsonIndentSizeMin, exports.jsonIndentSizeMax);
+        return self;
+    };
+    self.getJsonStringifyFunctions = function () {
+        return internalApi.jsonStringifyFunctions;
+    };
+    self.setJsonStringifyFunctions = function (stringify) {
+        internalApi.jsonStringifyFunctions = stringify;
+        return self;
+    };
+    self.getLogLevelMap = function () {
+        return internalApi.logLevelMap;
+    };
+    self.setLogLevelMap = function (map) {
+        internalApi.logLevelMap = map;
+        return self;
+    };
+    // Logger is ready!
+    return self;
+}
+exports.createLogger = createLogger;
+////////////////////////////////////////////////////////////////////////////////
+// Private Static Methods
+////////////////////////////////////////////////////////////////////////////////
+// None.
+//# sourceMappingURL=create-logger.function.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@agogpixel/pgmmv-logging-support/src/log-level.enum.js":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/@agogpixel/pgmmv-logging-support/src/log-level.enum.js ***!
+  \*****************************************************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+
+/**
+ * Exports log level enumeration.
+ *
+ * @module log-level.enum
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.LogLevel = void 0;
+/**
+ * Log level enumeration.
+ */
+var LogLevel;
+(function (LogLevel) {
+    /**
+     * Debug log level.
+     */
+    LogLevel[LogLevel["Debug"] = 0] = "Debug";
+    /**
+     * Info log level.
+     */
+    LogLevel[LogLevel["Info"] = 1] = "Info";
+    /**
+     * Warn log level.
+     */
+    LogLevel[LogLevel["Warn"] = 2] = "Warn";
+    /**
+     * Error log level.
+     */
+    LogLevel[LogLevel["Error"] = 3] = "Error";
+    /**
+     * Fatal log level.
+     */
+    LogLevel[LogLevel["Fatal"] = 4] = "Fatal";
+})(LogLevel = exports.LogLevel || (exports.LogLevel = {}));
+//# sourceMappingURL=log-level.enum.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/get-object-instance.function.js":
+/*!**********************************************************************************************************!*\
+  !*** ./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/get-object-instance.function.js ***!
+  \**********************************************************************************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+
+/**
+ * Exports get object instance function.
+ *
+ * @module object-instance/get-object-instance.function
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getObjectInstance = void 0;
+/**
+ * Get object instance with specified ID.
+ *
+ * @param instanceId Instance ID.
+ * @returns Object instance.
+ */
+function getObjectInstance(instanceId) {
+    return Agtk.objectInstances.get(instanceId);
+}
+exports.getObjectInstance = getObjectInstance;
+//# sourceMappingURL=get-object-instance.function.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/get-parent-object-instance.function.js":
+/*!*****************************************************************************************************************!*\
+  !*** ./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/get-parent-object-instance.function.js ***!
+  \*****************************************************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getParentObjectInstance = void 0;
+var get_object_instance_function_1 = __webpack_require__(/*! ./get-object-instance.function */ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/get-object-instance.function.js");
+var get_parent_object_instance_id_function_1 = __webpack_require__(/*! ./variables/get-parent-object-instance-id.function */ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/variables/get-parent-object-instance-id.function.js");
+/**
+ * Get parent object instance.
+ *
+ * @param childInstanceOrId Child object instance or ID.
+ * @returns Reference to parent object instance or `undefined`.
+ */
+function getParentObjectInstance(childInstanceOrId) {
+    var childInstance;
+    if (typeof childInstanceOrId === 'number') {
+        childInstance = (0, get_object_instance_function_1.getObjectInstance)(childInstanceOrId);
+    }
+    else {
+        childInstance = childInstanceOrId;
+    }
+    var parentInstanceId = (0, get_parent_object_instance_id_function_1.getParentObjectInstanceId)(childInstance);
+    if (parentInstanceId !== undefined && parentInstanceId !== -1) {
+        return (0, get_object_instance_function_1.getObjectInstance)(parentInstanceId);
+    }
+}
+exports.getParentObjectInstance = getParentObjectInstance;
+//# sourceMappingURL=get-parent-object-instance.function.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/object-instance-accessor-type.enum.js":
+/*!****************************************************************************************************************!*\
+  !*** ./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/object-instance-accessor-type.enum.js ***!
+  \****************************************************************************************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+
+/**
+ * Exports object instance accessor type enumeration.
+ *
+ * @module object-instance/object-instance-accessor-type.enum
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ObjectInstanceAccessorType = void 0;
+/**
+ * Object instance accessor type enumeration.
+ */
+var ObjectInstanceAccessorType;
+(function (ObjectInstanceAccessorType) {
+    /**
+     * Object instance switches.
+     */
+    ObjectInstanceAccessorType["Switches"] = "switches";
+    /**
+     * Object instance variables.
+     */
+    ObjectInstanceAccessorType["Variables"] = "variables";
+})(ObjectInstanceAccessorType = exports.ObjectInstanceAccessorType || (exports.ObjectInstanceAccessorType = {}));
+//# sourceMappingURL=object-instance-accessor-type.enum.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/resolve-id.function.js":
+/*!*************************************************************************************************!*\
+  !*** ./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/resolve-id.function.js ***!
+  \*************************************************************************************************/
 /***/ (function(__unused_webpack_module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.JsonLogicConnective = void 0;
-var JsonLogicConnective;
-(function (JsonLogicConnective) {
-    JsonLogicConnective["Not"] = "NOT";
-    JsonLogicConnective["And"] = "AND";
-    JsonLogicConnective["Or"] = "OR";
-    JsonLogicConnective["Nand"] = "NAND";
-    JsonLogicConnective["Nor"] = "NOR";
-    JsonLogicConnective["Xor"] = "XOR";
-    JsonLogicConnective["Xnor"] = "XNOR";
-})(JsonLogicConnective = exports.JsonLogicConnective || (exports.JsonLogicConnective = {}));
-//# sourceMappingURL=connective.js.map
+exports.resolveId = void 0;
+/**
+ * Resolve switch or variable ID.
+ *
+ * @param objectInstance Object instance.
+ * @param type Accessor type.
+ * @param idOrName ID or name of switch/variable.
+ * @returns ID or -1 when name not found.
+ */
+function resolveId(objectInstance, type, idOrName) {
+    if (typeof idOrName === 'string') {
+        return objectInstance[type].getIdByName(idOrName);
+    }
+    return idOrName;
+}
+exports.resolveId = resolveId;
+//# sourceMappingURL=resolve-id.function.js.map
 
 /***/ }),
 
-/***/ "./node_modules/@agogpixel/pgmmv-link-condition-support/src/json-logic/create-clause-transform.js":
+/***/ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/variables/get-controller-id.function.js":
+/*!******************************************************************************************************************!*\
+  !*** ./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/variables/get-controller-id.function.js ***!
+  \******************************************************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getControllerId = void 0;
+var get_variable_value_function_1 = __webpack_require__(/*! ./get-variable-value.function */ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/variables/get-variable-value.function.js");
+/**
+ * Get controller ID variable value.
+ *
+ * @param objectInstance Object instance.
+ * @returns Variable value.
+ */
+function getControllerId(objectInstance) {
+    // Controller ID values must be parsed for some reason - baz.
+    return parseInt((0, get_variable_value_function_1.getVariableValue)(objectInstance, Agtk.constants.objects.variables.ControllerIDId));
+}
+exports.getControllerId = getControllerId;
+//# sourceMappingURL=get-controller-id.function.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/variables/get-parent-object-instance-id.function.js":
+/*!******************************************************************************************************************************!*\
+  !*** ./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/variables/get-parent-object-instance-id.function.js ***!
+  \******************************************************************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getParentObjectInstanceId = void 0;
+var get_variable_value_function_1 = __webpack_require__(/*! ./get-variable-value.function */ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/variables/get-variable-value.function.js");
+/**
+ * Get parent object instance ID variable value.
+ *
+ * @param objectInstance Object instance.
+ * @returns Variable value.
+ */
+function getParentObjectInstanceId(objectInstance) {
+    return (0, get_variable_value_function_1.getVariableValue)(objectInstance, Agtk.constants.objects.variables.ParentObjectInstanceIDId);
+}
+exports.getParentObjectInstanceId = getParentObjectInstanceId;
+//# sourceMappingURL=get-parent-object-instance-id.function.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/variables/get-variable-value.function.js":
+/*!*******************************************************************************************************************!*\
+  !*** ./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/variables/get-variable-value.function.js ***!
+  \*******************************************************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getVariableValue = void 0;
+var object_instance_accessor_type_enum_1 = __webpack_require__(/*! ../object-instance-accessor-type.enum */ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/object-instance-accessor-type.enum.js");
+var resolve_id_function_1 = __webpack_require__(/*! ../resolve-id.function */ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/resolve-id.function.js");
+/**
+ * Get variable value in object instance.
+ *
+ * @param objectInstance Object instance.
+ * @param key Variable ID or name.
+ * @returns Resolved variable value or `undefined`.
+ */
+function getVariableValue(objectInstance, key) {
+    var id = (0, resolve_id_function_1.resolveId)(objectInstance, object_instance_accessor_type_enum_1.ObjectInstanceAccessorType.Variables, key);
+    if (id === -1) {
+        return;
+    }
+    return objectInstance.variables.get(id).getValue();
+}
+exports.getVariableValue = getVariableValue;
+//# sourceMappingURL=get-variable-value.function.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@agogpixel/pgmmv-plugin-support/src/create-plugin.function.js":
+/*!************************************************************************************!*\
+  !*** ./node_modules/@agogpixel/pgmmv-plugin-support/src/create-plugin.function.js ***!
+  \************************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.createPlugin = void 0;
+var plugin_info_category_1 = __webpack_require__(/*! @agogpixel/pgmmv-ts/api/agtk/plugin/plugin-info-category */ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-info-category.js");
+var plugin_ui_parameter_type_1 = __webpack_require__(/*! @agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-parameter-type */ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-parameter-type.js");
+var localization_1 = __webpack_require__(/*! ./localization */ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/index.js");
+////////////////////////////////////////////////////////////////////////////////
+// Public Static Properties
+////////////////////////////////////////////////////////////////////////////////
+// None.
+////////////////////////////////////////////////////////////////////////////////
+// Private Static Properties
+////////////////////////////////////////////////////////////////////////////////
+// None.
+////////////////////////////////////////////////////////////////////////////////
+// Public Static Methods
+////////////////////////////////////////////////////////////////////////////////
+/**
+ * Create an object instance that provides a base implementation for PGMMV
+ * plugins.
+ *
+ * @typeParam I Plugin's internal data type (default: `JsonValue`).
+ * @typeParam P Plugin's public API type (default: `AgtkPlugin`).
+ * @param config Plugin configuration.
+ * @param internal Provide an object to 'inherit' a reference to the plugin's
+ * internal {@link PluginProtectedApi} implementation.
+ * @returns An object instance that provides a base implementation for a PGMMV
+ * plugin.
+ * @public
+ * @static
+ */
+function createPlugin(config, internal) {
+    // Public API container.
+    var self = {};
+    // Protected API container.
+    var internalApi = internal || {};
+    //////////////////////////////////////////////////////////////////////////////
+    // Private Properties
+    //////////////////////////////////////////////////////////////////////////////
+    /**
+     * Plugin UI parameter configurations.
+     *
+     * @private
+     */
+    var parametersConfig = config.parameters || [];
+    /**
+     * Plugin action command configurations.
+     *
+     * @private
+     */
+    var actionCommandsConfig = config.actionCommands || [];
+    /**
+     * Plugin auto tiles configurations.
+     *
+     * @private
+     */
+    var autoTilesConfig = config.autoTiles || undefined;
+    /**
+     * Plugin link condition configurations.
+     *
+     * @private
+     */
+    var linkConditionsConfig = config.linkConditions || [];
+    /**
+     * Localized plugin UI parameters.
+     *
+     * @private
+     */
+    var localizedParameters;
+    /**
+     * Localized plugin actions commands.
+     *
+     * @private
+     */
+    var localizedActionCommands;
+    /**
+     * Localized plugin link conditions.
+     *
+     * @private
+     */
+    var localizedLinkConditions;
+    //////////////////////////////////////////////////////////////////////////////
+    // Private Methods
+    //////////////////////////////////////////////////////////////////////////////
+    // None.
+    //////////////////////////////////////////////////////////////////////////////
+    // Protected Properties
+    //////////////////////////////////////////////////////////////////////////////
+    internalApi.internalData = {};
+    internalApi.localization = (0, localization_1.createPluginLocalizationManager)({ localizations: config.localizations });
+    //////////////////////////////////////////////////////////////////////////////
+    // Protected Methods
+    //////////////////////////////////////////////////////////////////////////////
+    internalApi.getInfoParameter = function () {
+        if (!localizedParameters) {
+            localizedParameters = internalApi.localization.processParameterLocale(parametersConfig);
+        }
+        return localizedParameters;
+    };
+    internalApi.getInfoInternal = function () {
+        return JSON.parse(JSON.stringify(internalApi.internalData));
+    };
+    internalApi.getInfoActionCommand = function () {
+        if (!localizedActionCommands) {
+            localizedActionCommands = internalApi.localization.processActionCommandLocale(actionCommandsConfig);
+        }
+        return localizedActionCommands;
+    };
+    internalApi.getInfoLinkCondition = function () {
+        if (!localizedLinkConditions) {
+            localizedLinkConditions = internalApi.localization.processLinkConditionLocale(linkConditionsConfig);
+        }
+        return localizedLinkConditions;
+    };
+    internalApi.getInfoAutoTile = function () {
+        return autoTilesConfig;
+    };
+    internalApi.inEditor = function () {
+        return !Agtk || typeof Agtk.log !== 'function';
+    };
+    internalApi.inPlayer = function () {
+        return !!Agtk && typeof Agtk.version === 'string' && /^player .+$/.test(Agtk.version);
+    };
+    internalApi.normalizeActionCommandParameters = function (actionCommandIndex, paramValue) {
+        var vj = self.getInfo(plugin_info_category_1.AgtkPluginInfoCategory.ActionCommand)[actionCommandIndex];
+        return normalizeParameters(paramValue, vj.parameter);
+    };
+    internalApi.normalizeLinkConditionParameters = function (linkConditionIndex, paramValue) {
+        var vj = self.getInfo(plugin_info_category_1.AgtkPluginInfoCategory.LinkCondition)[linkConditionIndex];
+        return normalizeParameters(paramValue, vj.parameter);
+    };
+    internalApi.normalizeUiParameters = function (paramValue) {
+        return normalizeParameters(paramValue, self.getInfo(plugin_info_category_1.AgtkPluginInfoCategory.Parameter));
+    };
+    //////////////////////////////////////////////////////////////////////////////
+    // Public Properties
+    //////////////////////////////////////////////////////////////////////////////
+    // None.
+    //////////////////////////////////////////////////////////////////////////////
+    // Public Methods
+    //////////////////////////////////////////////////////////////////////////////
+    self.setLocale = function (arg1) {
+        internalApi.localization.setLocale(arg1);
+    };
+    self.getInfo = function (category) {
+        var info;
+        switch (category) {
+            case plugin_info_category_1.AgtkPluginInfoCategory.Name:
+                info = internalApi.localization.get(localization_1.PluginLocalizationRequiredKey.Name);
+                break;
+            case plugin_info_category_1.AgtkPluginInfoCategory.Description:
+                info = internalApi.localization.get(localization_1.PluginLocalizationRequiredKey.Description);
+                break;
+            case plugin_info_category_1.AgtkPluginInfoCategory.Author:
+                info = internalApi.localization.get(localization_1.PluginLocalizationRequiredKey.Author);
+                break;
+            case plugin_info_category_1.AgtkPluginInfoCategory.Help:
+                info = internalApi.localization.get(localization_1.PluginLocalizationRequiredKey.Help);
+                break;
+            case plugin_info_category_1.AgtkPluginInfoCategory.Parameter:
+                info = internalApi.getInfoParameter();
+                break;
+            case plugin_info_category_1.AgtkPluginInfoCategory.Internal:
+                info = internalApi.getInfoInternal();
+                break;
+            case plugin_info_category_1.AgtkPluginInfoCategory.ActionCommand:
+                info = internalApi.getInfoActionCommand();
+                break;
+            case plugin_info_category_1.AgtkPluginInfoCategory.LinkCondition:
+                info = internalApi.getInfoLinkCondition();
+                break;
+            case plugin_info_category_1.AgtkPluginInfoCategory.AutoTile:
+                info = internalApi.getInfoAutoTile();
+                break;
+        }
+        return info;
+    };
+    self.initialize = function (data) {
+        if (data) {
+            self.setInternal(data);
+        }
+    };
+    self.finalize = function () {
+        return;
+    };
+    self.setParamValue = function () {
+        return;
+    };
+    self.setInternal = function (data) {
+        internalApi.internalData = JSON.parse(JSON.stringify(data)) || internalApi.internalData;
+    };
+    self.call = function call() {
+        return;
+    };
+    // Plugin is ready!
+    return self;
+}
+exports.createPlugin = createPlugin;
+////////////////////////////////////////////////////////////////////////////////
+// Private Static Methods
+////////////////////////////////////////////////////////////////////////////////
+/**
+ * Normalize plugin UI paramters.
+ *
+ * @param paramValue Plugin UI parameter values.
+ * @param defaults Default plugin UI parameters.
+ * @returns Normalized plugin UI parameters.
+ * @private
+ * @static
+ */
+function normalizeParameters(paramValue, defaults) {
+    var normalized = {};
+    for (var i = 0; i < defaults.length; i++) {
+        var p = defaults[i];
+        normalized[p.id] = (p.type === plugin_ui_parameter_type_1.AgtkPluginUiParameterType.Json ? JSON.stringify(p.defaultValue) : p.defaultValue);
+    }
+    for (var i = 0; i < paramValue.length; ++i) {
+        var p = paramValue[i];
+        normalized[p.id] = p.value;
+    }
+    return normalized;
+}
+//# sourceMappingURL=create-plugin.function.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/create-plugin-localization-manager.function.js":
+/*!**********************************************************************************************************************!*\
+  !*** ./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/create-plugin-localization-manager.function.js ***!
+  \**********************************************************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.createPluginLocalizationManager = void 0;
+/**
+ * Exports plugin localization manager factory.
+ *
+ * @module localization/create-plugin-localization-manager.function
+ */
+var plugin_ui_parameter_type_1 = __webpack_require__(/*! @agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-parameter-type */ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-parameter-type.js");
+////////////////////////////////////////////////////////////////////////////////
+// Public Static Properties
+////////////////////////////////////////////////////////////////////////////////
+// None.
+////////////////////////////////////////////////////////////////////////////////
+// Private Static Properties
+////////////////////////////////////////////////////////////////////////////////
+// None.
+////////////////////////////////////////////////////////////////////////////////
+// Public Static Methods
+////////////////////////////////////////////////////////////////////////////////
+/**
+ * Create an object instance that provides an implementation for a plugin
+ * localization manager.
+ *
+ * @param config Plugin localization manager configuration.
+ * @returns An object instance that provides an implementation for a plugin
+ * localization manager.
+ * @public
+ * @static
+ */
+function createPluginLocalizationManager(config) {
+    // Public API container.
+    var self = {};
+    //////////////////////////////////////////////////////////////////////////////
+    // Private Properties
+    //////////////////////////////////////////////////////////////////////////////
+    /**
+     * Localization configurations.
+     *
+     * @private
+     */
+    var localizations = config.localizations && config.localizations.length > 0
+        ? config.localizations
+        : [{ locale: 'en', data: {} }];
+    /**
+     * Localization fallback data.
+     *
+     * @private
+     */
+    var fallbackData = localizations[0].data;
+    /**
+     * Current locale.
+     *
+     * @private
+     */
+    var currentLocale = localizations[0].locale;
+    /**
+     * Maps locale prefix to localization data.
+     *
+     * @private
+     */
+    var localeMap = {};
+    // Load locale map.
+    for (var i = 0; i < localizations.length; ++i) {
+        localeMap[localizations[i].locale] = localizations[i].data;
+    }
+    /**
+     * Inline locale regex for text replacement.
+     *
+     * @private
+     */
+    var inlineRegex = /^loca\((.+)\)$/;
+    //////////////////////////////////////////////////////////////////////////////
+    // Private Methods
+    //////////////////////////////////////////////////////////////////////////////
+    // None.
+    //////////////////////////////////////////////////////////////////////////////
+    // Protected Properties
+    //////////////////////////////////////////////////////////////////////////////
+    // None.
+    //////////////////////////////////////////////////////////////////////////////
+    // Protected Methods
+    //////////////////////////////////////////////////////////////////////////////
+    // None.
+    //////////////////////////////////////////////////////////////////////////////
+    // Public Properties
+    //////////////////////////////////////////////////////////////////////////////
+    // None.
+    //////////////////////////////////////////////////////////////////////////////
+    // Public Methods
+    //////////////////////////////////////////////////////////////////////////////
+    self.get = function (key) {
+        var loca = currentLocale.substring(0, 2);
+        if (localeMap[loca] && typeof localeMap[loca][key] === 'string') {
+            return localeMap[loca][key];
+        }
+        if (typeof fallbackData[key] === 'string') {
+            return fallbackData[key];
+        }
+        return "LOCA MISSING: ".concat(key);
+    };
+    self.getLocale = function () {
+        return currentLocale;
+    };
+    self.setLocale = function (locale) {
+        if (!localeMap[locale.substring(0, 2)]) {
+            return false;
+        }
+        currentLocale = locale;
+        return true;
+    };
+    self.processParameterLocale = function (parameters) {
+        for (var i = 0; i < parameters.length; ++i) {
+            var parameter = parameters[i];
+            var matches = parameter.name.match(inlineRegex);
+            if (matches && matches.length > 1) {
+                parameter.name = self.get(matches[1]);
+            }
+            switch (parameter.type) {
+                case plugin_ui_parameter_type_1.AgtkPluginUiParameterType.String:
+                case plugin_ui_parameter_type_1.AgtkPluginUiParameterType.MultiLineString:
+                    matches = parameter.defaultValue.match(inlineRegex);
+                    if (matches && matches.length > 1) {
+                        parameter.defaultValue = self.get(matches[1]);
+                    }
+                    break;
+                case plugin_ui_parameter_type_1.AgtkPluginUiParameterType.CustomId:
+                    for (var j = 0; j < parameter.customParam.length; ++j) {
+                        var param = parameter.customParam[j];
+                        matches = param.name.match(inlineRegex);
+                        if (matches && matches.length > 1) {
+                            param.name = self.get(matches[1]);
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        return parameters;
+    };
+    self.processActionCommandLocale = function (actionCommands) {
+        for (var i = 0; i < actionCommands.length; ++i) {
+            var executeCommand = actionCommands[i];
+            var matches = executeCommand.name.match(inlineRegex);
+            if (matches && matches.length > 1) {
+                executeCommand.name = self.get(matches[1]);
+            }
+            matches = executeCommand.description.match(inlineRegex);
+            if (matches && matches.length > 1) {
+                executeCommand.description = self.get(matches[1]);
+            }
+            self.processParameterLocale(executeCommand.parameter);
+        }
+        return actionCommands;
+    };
+    self.processLinkConditionLocale = function (linkConditions) {
+        for (var i = 0; i < linkConditions.length; ++i) {
+            var linkCondition = linkConditions[i];
+            var matches = linkCondition.name.match(inlineRegex);
+            if (matches && matches.length > 1) {
+                linkCondition.name = self.get(matches[1]);
+            }
+            matches = linkCondition.description.match(inlineRegex);
+            if (matches && matches.length > 1) {
+                linkCondition.description = self.get(matches[1]);
+            }
+            self.processParameterLocale(linkCondition.parameter);
+        }
+        return linkConditions;
+    };
+    return self;
+}
+exports.createPluginLocalizationManager = createPluginLocalizationManager;
+////////////////////////////////////////////////////////////////////////////////
+// Private Static Methods
+////////////////////////////////////////////////////////////////////////////////
+// None.
+//# sourceMappingURL=create-plugin-localization-manager.function.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/index.js":
+/*!********************************************************************************!*\
+  !*** ./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/index.js ***!
+  \********************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+/**
+ * Exports PGMMV plugin support localization APIs and implementations.
+ *
+ * @module localization
+ */
+__exportStar(__webpack_require__(/*! ./create-plugin-localization-manager.function */ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/create-plugin-localization-manager.function.js"), exports);
+__exportStar(__webpack_require__(/*! ./plugin-localization-data.type */ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/plugin-localization-data.type.js"), exports);
+__exportStar(__webpack_require__(/*! ./plugin-localization-manager-config.interface */ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/plugin-localization-manager-config.interface.js"), exports);
+__exportStar(__webpack_require__(/*! ./plugin-localization-manager.interface */ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/plugin-localization-manager.interface.js"), exports);
+__exportStar(__webpack_require__(/*! ./plugin-localization-required-key.enum */ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/plugin-localization-required-key.enum.js"), exports);
+__exportStar(__webpack_require__(/*! ./plugin-localization.interface */ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/plugin-localization.interface.js"), exports);
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/plugin-localization-data.type.js":
 /*!********************************************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-link-condition-support/src/json-logic/create-clause-transform.js ***!
+  !*** ./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/plugin-localization-data.type.js ***!
   \********************************************************************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+/**
+ * Exports plugin localization data type.
+ *
+ * @module localization/plugin-localization-data.type
+ */
+var plugin_localization_required_key_enum_1 = __webpack_require__(/*! ./plugin-localization-required-key.enum */ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/plugin-localization-required-key.enum.js");
+//# sourceMappingURL=plugin-localization-data.type.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/plugin-localization-manager-config.interface.js":
+/*!***********************************************************************************************************************!*\
+  !*** ./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/plugin-localization-manager-config.interface.js ***!
+  \***********************************************************************************************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+//# sourceMappingURL=plugin-localization-manager-config.interface.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/plugin-localization-manager.interface.js":
+/*!****************************************************************************************************************!*\
+  !*** ./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/plugin-localization-manager.interface.js ***!
+  \****************************************************************************************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+//# sourceMappingURL=plugin-localization-manager.interface.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/plugin-localization-required-key.enum.js":
+/*!****************************************************************************************************************!*\
+  !*** ./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/plugin-localization-required-key.enum.js ***!
+  \****************************************************************************************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+
+/**
+ * Exports plugin localization required key enumeration.
+ *
+ * @module localization/plugin-localization-required-key.enum
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.PluginLocalizationRequiredKey = void 0;
+/**
+ * Plugin localization required key enumerations.
+ */
+var PluginLocalizationRequiredKey;
+(function (PluginLocalizationRequiredKey) {
+    /**
+     * Plugin name.
+     */
+    PluginLocalizationRequiredKey["Name"] = "PLUGIN_NAME";
+    /**
+     * Plugin description.
+     */
+    PluginLocalizationRequiredKey["Description"] = "PLUGIN_DESCRIPTION";
+    /**
+     * Plugin author.
+     */
+    PluginLocalizationRequiredKey["Author"] = "PLUGIN_AUTHOR";
+    /**
+     * Plugin help.
+     */
+    PluginLocalizationRequiredKey["Help"] = "PLUGIN_HELP";
+})(PluginLocalizationRequiredKey = exports.PluginLocalizationRequiredKey || (exports.PluginLocalizationRequiredKey = {}));
+//# sourceMappingURL=plugin-localization-required-key.enum.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/plugin-localization.interface.js":
+/*!********************************************************************************************************!*\
+  !*** ./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/plugin-localization.interface.js ***!
+  \********************************************************************************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+//# sourceMappingURL=plugin-localization.interface.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@agogpixel/pgmmv-resource-support/src/cache/create-resource-cache.function.js":
+/*!****************************************************************************************************!*\
+  !*** ./node_modules/@agogpixel/pgmmv-resource-support/src/cache/create-resource-cache.function.js ***!
+  \****************************************************************************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.createResourceCache = void 0;
+////////////////////////////////////////////////////////////////////////////////
+// Public Static Properties
+////////////////////////////////////////////////////////////////////////////////
+// None.
+////////////////////////////////////////////////////////////////////////////////
+// Private Static Properties
+////////////////////////////////////////////////////////////////////////////////
+// None.
+////////////////////////////////////////////////////////////////////////////////
+// Public Static Methods
+////////////////////////////////////////////////////////////////////////////////
+/**
+ * Create an object instance that implements the {@link ResourceCache}
+ * interface. This is an in-memory cache with no TTL support.
+ *
+ * @typeParam T Key type.
+ * @typeParam U Value type.
+ * @param internal Provide an object to 'inherit' a reference to the resource
+ * cache's internal {@link ResourceCacheProtectedApi} implementation.
+ * @returns An object instance that implements the {@link ResourceCache}
+ * interface.
+ * @public
+ * @static
+ */
+function createResourceCache(internal) {
+    // Public API container.
+    var self = {};
+    // Protected API container.
+    var internalApi = internal || {};
+    //////////////////////////////////////////////////////////////////////////////
+    // Private Properties
+    //////////////////////////////////////////////////////////////////////////////
+    // None.
+    //////////////////////////////////////////////////////////////////////////////
+    // Private Methods
+    //////////////////////////////////////////////////////////////////////////////
+    // None.
+    //////////////////////////////////////////////////////////////////////////////
+    // Protected Properties
+    //////////////////////////////////////////////////////////////////////////////
+    internalApi.cache = {};
+    //////////////////////////////////////////////////////////////////////////////
+    // Protected Methods
+    //////////////////////////////////////////////////////////////////////////////
+    // None.
+    //////////////////////////////////////////////////////////////////////////////
+    // Public Properties
+    //////////////////////////////////////////////////////////////////////////////
+    // None.
+    //////////////////////////////////////////////////////////////////////////////
+    // Public Methods
+    //////////////////////////////////////////////////////////////////////////////
+    self.clear = function () {
+        var keys = Object.keys(internalApi.cache);
+        for (var i = 0; i < keys.length; ++i) {
+            delete internalApi.cache[keys[i]];
+        }
+        return self;
+    };
+    self.delete = function (key) {
+        delete internalApi.cache[key];
+        return self;
+    };
+    self.get = function (key) {
+        return internalApi.cache[key];
+    };
+    self.has = function (key) {
+        return !!internalApi.cache[key];
+    };
+    self.set = function (key, value) {
+        internalApi.cache[key] = value;
+        return self;
+    };
+    return self;
+}
+exports.createResourceCache = createResourceCache;
+////////////////////////////////////////////////////////////////////////////////
+// Private Static Methods
+////////////////////////////////////////////////////////////////////////////////
+// None.
+//# sourceMappingURL=create-resource-cache.function.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@agogpixel/pgmmv-resource-support/src/json/logic/create-json-logic-clause-transform.function.js":
+/*!**********************************************************************************************************************!*\
+  !*** ./node_modules/@agogpixel/pgmmv-resource-support/src/json/logic/create-json-logic-clause-transform.function.js ***!
+  \**********************************************************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.createJsonLogicClauseTransform = void 0;
-var connective_1 = __webpack_require__(/*! ./connective */ "./node_modules/@agogpixel/pgmmv-link-condition-support/src/json-logic/connective.js");
+var json_logic_connective_enum_1 = __webpack_require__(/*! ./json-logic-connective.enum */ "./node_modules/@agogpixel/pgmmv-resource-support/src/json/logic/json-logic-connective.enum.js");
+////////////////////////////////////////////////////////////////////////////////
+// Public Static Properties
+////////////////////////////////////////////////////////////////////////////////
+// None.
+////////////////////////////////////////////////////////////////////////////////
+// Private Static Properties
+////////////////////////////////////////////////////////////////////////////////
+// None.
+////////////////////////////////////////////////////////////////////////////////
+// Public Static Methods
+////////////////////////////////////////////////////////////////////////////////
+/**
+ * Create a JSON logic clause transform function based on specified constraint
+ * factory.
+ *
+ * @typeParam K Clause key type.
+ * @typeParam P Clause paramater/value type.
+ * @typeParam Q Constraint parameter types.
+ * @param constraintFactory Function that generats constraints from
+ * clauses/conditions.
+ * @returns JSON logic clause transform function.
+ * @public
+ * @static
+ */
 function createJsonLogicClauseTransform(constraintFactory) {
     return function transformJsonLogicClause(clause) {
         var errors = [];
@@ -72,9 +1132,9 @@ function createJsonLogicClauseTransform(constraintFactory) {
                 errors.push("".concat(currentPath, ": Invalid JSON logic sub-clauses; expected array of length 1 or greater"));
                 return errorResult;
             }
-            if (connective === connective_1.JsonLogicConnective.Not) {
+            if (connective === json_logic_connective_enum_1.JsonLogicConnective.Not) {
                 if (subClauses.length > 1) {
-                    errors.push("".concat(currentPath, ": Invalid JSON logic sub-clause for ").concat(connective_1.JsonLogicConnective.Not, " connective; array of length 1 required"));
+                    errors.push("".concat(currentPath, ": Invalid JSON logic sub-clause for ").concat(json_logic_connective_enum_1.JsonLogicConnective.Not, " connective; array of length 1 required"));
                     return errorResult;
                 }
                 var innerConstraint_1 = parseJsonLogicClause(subClauses[0], "".concat(currentPath, "[0]"));
@@ -92,12 +1152,12 @@ function createJsonLogicClauseTransform(constraintFactory) {
             }
             var subConstraints = [];
             switch (connective) {
-                case connective_1.JsonLogicConnective.And:
-                case connective_1.JsonLogicConnective.Or:
-                case connective_1.JsonLogicConnective.Nand:
-                case connective_1.JsonLogicConnective.Nor:
-                case connective_1.JsonLogicConnective.Xor:
-                case connective_1.JsonLogicConnective.Xnor:
+                case json_logic_connective_enum_1.JsonLogicConnective.And:
+                case json_logic_connective_enum_1.JsonLogicConnective.Or:
+                case json_logic_connective_enum_1.JsonLogicConnective.Nand:
+                case json_logic_connective_enum_1.JsonLogicConnective.Nor:
+                case json_logic_connective_enum_1.JsonLogicConnective.Xor:
+                case json_logic_connective_enum_1.JsonLogicConnective.Xnor:
                     for (var i = 0; i < subClauses.length; ++i) {
                         subConstraints.push(parseJsonLogicClause(subClauses[i], "".concat(currentPath, "[").concat(i, "]")));
                     }
@@ -107,7 +1167,7 @@ function createJsonLogicClauseTransform(constraintFactory) {
                     return errorResult;
             }
             switch (connective) {
-                case connective_1.JsonLogicConnective.And:
+                case json_logic_connective_enum_1.JsonLogicConnective.And:
                     return function () {
                         var args = [];
                         for (var _i = 0; _i < arguments.length; _i++) {
@@ -120,7 +1180,7 @@ function createJsonLogicClauseTransform(constraintFactory) {
                         }
                         return true;
                     };
-                case connective_1.JsonLogicConnective.Or:
+                case json_logic_connective_enum_1.JsonLogicConnective.Or:
                     return function () {
                         var args = [];
                         for (var _i = 0; _i < arguments.length; _i++) {
@@ -133,7 +1193,7 @@ function createJsonLogicClauseTransform(constraintFactory) {
                         }
                         return false;
                     };
-                case connective_1.JsonLogicConnective.Nand:
+                case json_logic_connective_enum_1.JsonLogicConnective.Nand:
                     return function () {
                         var args = [];
                         for (var _i = 0; _i < arguments.length; _i++) {
@@ -146,7 +1206,7 @@ function createJsonLogicClauseTransform(constraintFactory) {
                         }
                         return false;
                     };
-                case connective_1.JsonLogicConnective.Nor:
+                case json_logic_connective_enum_1.JsonLogicConnective.Nor:
                     return function () {
                         var args = [];
                         for (var _i = 0; _i < arguments.length; _i++) {
@@ -159,7 +1219,7 @@ function createJsonLogicClauseTransform(constraintFactory) {
                         }
                         return true;
                     };
-                case connective_1.JsonLogicConnective.Xor:
+                case json_logic_connective_enum_1.JsonLogicConnective.Xor:
                     return function () {
                         var args = [];
                         for (var _i = 0; _i < arguments.length; _i++) {
@@ -173,7 +1233,7 @@ function createJsonLogicClauseTransform(constraintFactory) {
                         }
                         return trueCount % 2 === 1;
                     };
-                case connective_1.JsonLogicConnective.Xnor:
+                case json_logic_connective_enum_1.JsonLogicConnective.Xnor:
                     return function () {
                         var args = [];
                         for (var _i = 0; _i < arguments.length; _i++) {
@@ -194,1118 +1254,105 @@ function createJsonLogicClauseTransform(constraintFactory) {
     };
 }
 exports.createJsonLogicClauseTransform = createJsonLogicClauseTransform;
-//# sourceMappingURL=create-clause-transform.js.map
+////////////////////////////////////////////////////////////////////////////////
+// Private Static Methods
+////////////////////////////////////////////////////////////////////////////////
+// None.
+//# sourceMappingURL=create-json-logic-clause-transform.function.js.map
 
 /***/ }),
 
-/***/ "./node_modules/@agogpixel/pgmmv-logging-support/src/create-logger.js":
-/*!****************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-logging-support/src/create-logger.js ***!
-  \****************************************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createLogger = void 0;
-var get_unix_timestamp_1 = __webpack_require__(/*! @agogpixel/pgmmv-resource-support/src/time/get-unix-timestamp */ "./node_modules/@agogpixel/pgmmv-resource-support/src/time/get-unix-timestamp.js");
-var to_json_1 = __webpack_require__(/*! @agogpixel/pgmmv-resource-support/src/json/to-json */ "./node_modules/@agogpixel/pgmmv-resource-support/src/json/to-json.js");
-var log_level_1 = __webpack_require__(/*! ./log-level */ "./node_modules/@agogpixel/pgmmv-logging-support/src/log-level.js");
-/**
- *
- */
-var defaultJsonIndentSize = 2;
-/**
- *
- */
-var defaultJsonStringifyFunctions = false;
-/**
- *
- */
-var jsonIndentSizeMin = 0;
-/**
- *
- */
-var jsonIndentSizeMax = 8;
-/**
- *
- * @param config
- * @param internal
- * @returns
- */
-function createLogger(config, internal) {
-    var _a;
-    /**
-     *
-     */
-    var self = {};
-    /**
-     *
-     */
-    var internalApi = internal || {};
-    /**
-     *
-     * @param value
-     * @param min
-     * @param max
-     * @returns
-     */
-    function clamp(value, min, max) {
-        if (value < min) {
-            return min;
-        }
-        if (value > max) {
-            return max;
-        }
-        return value;
-    }
-    /**
-     *
-     */
-    internalApi.logLevel = config.logLevel || log_level_1.LogLevel.Info;
-    /**
-     *
-     */
-    internalApi.runtimeLog = config.runtimeLog || Agtk.log;
-    /**
-     *
-     */
-    internalApi.jsonIndentSize =
-        typeof config.jsonIndentSize !== 'number'
-            ? defaultJsonIndentSize
-            : clamp(config.jsonIndentSize, jsonIndentSizeMin, jsonIndentSizeMax);
-    /**
-     *
-     */
-    internalApi.jsonStringifyFunctions = !!config.jsonStringifyFunctions || defaultJsonStringifyFunctions;
-    /**
-     *
-     */
-    internalApi.logLevelMap = config.logLevelMap || (_a = {},
-        _a[log_level_1.LogLevel.Debug] = log_level_1.LogLevel[log_level_1.LogLevel.Debug],
-        _a[log_level_1.LogLevel.Info] = log_level_1.LogLevel[log_level_1.LogLevel.Info],
-        _a[log_level_1.LogLevel.Warn] = log_level_1.LogLevel[log_level_1.LogLevel.Warn],
-        _a[log_level_1.LogLevel.Error] = log_level_1.LogLevel[log_level_1.LogLevel.Error],
-        _a[log_level_1.LogLevel.Fatal] = log_level_1.LogLevel[log_level_1.LogLevel.Fatal],
-        _a);
-    /**
-     *
-     * @param data
-     * @param level
-     */
-    self.log = function log(data, level) {
-        if (typeof level !== 'string' && typeof level !== 'number') {
-            internalApi.runtimeLog(typeof data === 'string'
-                ? data
-                : (0, to_json_1.toJson)(data, internalApi.jsonIndentSize, internalApi.jsonStringifyFunctions));
-            return;
-        }
-        var logLevel = typeof level === 'string' ? log_level_1.LogLevel[level] : level;
-        if (logLevel < internalApi.logLevel) {
-            return;
-        }
-        var message = typeof data === 'string' ? data : (0, to_json_1.toJson)(data, internalApi.jsonIndentSize, internalApi.jsonStringifyFunctions);
-        var messageLog = "[".concat((0, get_unix_timestamp_1.getUnixTimestamp)(), "] ").concat(internalApi.logLevelMap[logLevel], ": ").concat(message);
-        internalApi.runtimeLog(messageLog);
-    };
-    /**
-     *
-     * @param data
-     */
-    self.debug = function debug(data) {
-        self.log(data, log_level_1.LogLevel.Debug);
-    };
-    /**
-     *
-     * @param data
-     */
-    self.info = function info(data) {
-        self.log(data, log_level_1.LogLevel.Info);
-    };
-    /**
-     *
-     * @param data
-     */
-    self.warn = function warn(data) {
-        self.log(data, log_level_1.LogLevel.Warn);
-    };
-    /**
-     *
-     * @param data
-     */
-    self.error = function error(data) {
-        self.log(data, log_level_1.LogLevel.Error);
-    };
-    /**
-     *
-     * @param data
-     */
-    self.fatal = function fatal(data) {
-        self.log(data, log_level_1.LogLevel.Fatal);
-    };
-    /**
-     *
-     */
-    self.getLogLevel = function getLogLevel() {
-        return internalApi.logLevel;
-    };
-    /**
-     *
-     * @param level
-     */
-    self.setLogLevel = function setLogLevel(level) {
-        internalApi.logLevel = level;
-        return self;
-    };
-    /**
-     *
-     */
-    self.getRuntimeLog = function getRuntimeLog() {
-        return internalApi.runtimeLog;
-    };
-    /**
-     *
-     * @param log
-     */
-    self.setRuntimeLog = function setRuntimeLog(log) {
-        internalApi.runtimeLog = log;
-        return self;
-    };
-    /**
-     *
-     */
-    self.getJsonIndentSize = function getJsonIndentSize() {
-        return internalApi.jsonIndentSize;
-    };
-    /**
-     *
-     * @param size
-     */
-    self.setJsonIndentSize = function setJsonIndentSize(size) {
-        internalApi.jsonIndentSize = clamp(size, jsonIndentSizeMin, jsonIndentSizeMax);
-        return self;
-    };
-    /**
-     *
-     */
-    self.getJsonStringifyFunctions = function getJsonStringifyFunctions() {
-        return internalApi.jsonStringifyFunctions;
-    };
-    /**
-     *
-     * @param stringify
-     */
-    self.setJsonStringifyFunctions = function setJsonStringifyFunctions(stringify) {
-        internalApi.jsonStringifyFunctions = stringify;
-        return self;
-    };
-    /**
-     *
-     */
-    self.getLogLevelMap = function getLogLevelMap() {
-        return internalApi.logLevelMap;
-    };
-    /**
-     *
-     * @param map
-     */
-    self.setLogLevelMap = function setLogLevelMap(map) {
-        internalApi.logLevelMap = map;
-        return self;
-    };
-    return self;
-}
-exports.createLogger = createLogger;
-//# sourceMappingURL=create-logger.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-logging-support/src/log-level.js":
-/*!************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-logging-support/src/log-level.js ***!
-  \************************************************************************/
+/***/ "./node_modules/@agogpixel/pgmmv-resource-support/src/json/logic/json-logic-connective.enum.js":
+/*!*****************************************************************************************************!*\
+  !*** ./node_modules/@agogpixel/pgmmv-resource-support/src/json/logic/json-logic-connective.enum.js ***!
+  \*****************************************************************************************************/
 /***/ (function(__unused_webpack_module, exports) {
 
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.LogLevel = void 0;
 /**
+ * Exports JSON logic connective enumeration.
  *
+ * @module json/logic/json-logic-connective.enum
  */
-var LogLevel;
-(function (LogLevel) {
-    /**
-     *
-     */
-    LogLevel[LogLevel["Debug"] = 0] = "Debug";
-    /**
-     *
-     */
-    LogLevel[LogLevel["Info"] = 1] = "Info";
-    /**
-     *
-     */
-    LogLevel[LogLevel["Warn"] = 2] = "Warn";
-    /**
-     *
-     */
-    LogLevel[LogLevel["Error"] = 3] = "Error";
-    /**
-     *
-     */
-    LogLevel[LogLevel["Fatal"] = 4] = "Fatal";
-})(LogLevel = exports.LogLevel || (exports.LogLevel = {}));
-//# sourceMappingURL=log-level.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/get-controller-id.js":
-/*!***********************************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/get-controller-id.js ***!
-  \***********************************************************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getControllerId = void 0;
-var get_variable_value_1 = __webpack_require__(/*! ./get-variable-value */ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/get-variable-value.js");
-function getControllerId(objectInstance) {
-    // Controller ID values must be parsed for some reason - baz
-    return parseInt((0, get_variable_value_1.getVariableValue)(objectInstance, Agtk.constants.objects.variables.ControllerIDId));
-}
-exports.getControllerId = getControllerId;
-//# sourceMappingURL=get-controller-id.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/get-object-instance.js":
-/*!*************************************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/get-object-instance.js ***!
-  \*************************************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getObjectInstance = void 0;
-function getObjectInstance(instanceId) {
-    return Agtk.objectInstances.get(instanceId);
-}
-exports.getObjectInstance = getObjectInstance;
-//# sourceMappingURL=get-object-instance.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/get-parent-object-instance-id.js":
-/*!***********************************************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/get-parent-object-instance-id.js ***!
-  \***********************************************************************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getParentObjectInstanceId = void 0;
-var get_variable_value_1 = __webpack_require__(/*! ./get-variable-value */ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/get-variable-value.js");
-function getParentObjectInstanceId(objectInstance) {
-    return (0, get_variable_value_1.getVariableValue)(objectInstance, Agtk.constants.objects.variables.ParentObjectInstanceIDId);
-}
-exports.getParentObjectInstanceId = getParentObjectInstanceId;
-//# sourceMappingURL=get-parent-object-instance-id.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/get-parent-object-instance.js":
-/*!********************************************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/get-parent-object-instance.js ***!
-  \********************************************************************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getParentObjectInstance = void 0;
-var get_object_instance_1 = __webpack_require__(/*! ./get-object-instance */ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/get-object-instance.js");
-var get_parent_object_instance_id_1 = __webpack_require__(/*! ./get-parent-object-instance-id */ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/get-parent-object-instance-id.js");
-function getParentObjectInstance(childInstanceOrId) {
-    var childInstance;
-    if (typeof childInstanceOrId === 'number') {
-        childInstance = (0, get_object_instance_1.getObjectInstance)(childInstanceOrId);
-    }
-    else {
-        childInstance = childInstanceOrId;
-    }
-    var parentInstanceId = (0, get_parent_object_instance_id_1.getParentObjectInstanceId)(childInstance);
-    if (parentInstanceId !== -1) {
-        return (0, get_object_instance_1.getObjectInstance)(parentInstanceId);
-    }
-}
-exports.getParentObjectInstance = getParentObjectInstance;
-//# sourceMappingURL=get-parent-object-instance.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/get-variable-value.js":
-/*!************************************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/get-variable-value.js ***!
-  \************************************************************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getVariableValue = void 0;
-var resolve_id_1 = __webpack_require__(/*! ./resolve-id */ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/resolve-id.js");
-function getVariableValue(objectInstance, key) {
-    return objectInstance.variables.get((0, resolve_id_1.resolveId)(objectInstance, 'variables', key)).getValue();
-}
-exports.getVariableValue = getVariableValue;
-//# sourceMappingURL=get-variable-value.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/resolve-id.js":
-/*!****************************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/resolve-id.js ***!
-  \****************************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.resolveId = void 0;
-function resolveId(objectInstance, type, idOrName) {
-    if (typeof idOrName === 'string') {
-        return objectInstance[type].getIdByName(idOrName);
-    }
-    return idOrName;
-}
-exports.resolveId = resolveId;
-//# sourceMappingURL=resolve-id.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-plugin-support/src/create-plugin.js":
-/*!***************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-plugin-support/src/create-plugin.js ***!
-  \***************************************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createPlugin = void 0;
-var plugin_1 = __webpack_require__(/*! @agogpixel/pgmmv-ts/api/agtk/plugin */ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/index.js");
-var localization_1 = __webpack_require__(/*! ./localization */ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/index.js");
+exports.JsonLogicConnective = void 0;
 /**
- *
- * @param config
- * @param internal
- * @returns
+ * JSON logic connective string enumeration.
  */
-function createPlugin(config, internal) {
+var JsonLogicConnective;
+(function (JsonLogicConnective) {
     /**
-     *
+     * NOT logic connective.
      */
-    var self = {};
+    JsonLogicConnective["Not"] = "NOT";
     /**
-     *
+     * AND logic connective.
      */
-    var internalApi = internal || {};
+    JsonLogicConnective["And"] = "AND";
     /**
-     *
+     * OR logic connective.
      */
-    var parametersConfig = config.parameters || [];
+    JsonLogicConnective["Or"] = "OR";
     /**
-     *
+     * NAND logic connective.
      */
-    var actionCommandsConfig = config.actionCommands || [];
+    JsonLogicConnective["Nand"] = "NAND";
     /**
-     *
+     * NOR logic connective.
      */
-    var autoTilesConfig = config.autoTiles || undefined;
+    JsonLogicConnective["Nor"] = "NOR";
     /**
-     *
+     * XOR logic connective.
      */
-    var linkConditionsConfig = config.linkConditions || [];
+    JsonLogicConnective["Xor"] = "XOR";
     /**
-     *
+     * XNOR logic connective.
      */
-    var localizedParameters;
-    /**
-     *
-     */
-    var localizedActionCommands;
-    /**
-     *
-     */
-    var localizedLinkConditions;
-    /**
-     *
-     */
-    internalApi.internalData = {};
-    /**
-     *
-     */
-    internalApi.localization = (0, localization_1.createPluginLocalizationManager)({ localizations: config.localizations });
-    /**
-     *
-     * @returns
-     */
-    internalApi.getInfoParameter = function getInfoParameter() {
-        if (!localizedParameters) {
-            localizedParameters = internalApi.localization.processParameterLocale(parametersConfig);
-        }
-        return localizedParameters;
-    };
-    /**
-     *
-     * @returns
-     */
-    internalApi.getInfoInternal = function getInfoInternal() {
-        return JSON.parse(JSON.stringify(internalApi.internalData));
-    };
-    /**
-     *
-     * @returns
-     */
-    internalApi.getInfoActionCommand = function getInfoActionCommand() {
-        if (!localizedActionCommands) {
-            localizedActionCommands = internalApi.localization.processExecuteCommandLocale(actionCommandsConfig);
-        }
-        return localizedActionCommands;
-    };
-    /**
-     *
-     * @returns
-     */
-    internalApi.getInfoLinkCondition = function getInfoLinkCondition() {
-        if (!localizedLinkConditions) {
-            localizedLinkConditions = internalApi.localization.processLinkConditionLocale(linkConditionsConfig);
-        }
-        return localizedLinkConditions;
-    };
-    /**
-     *
-     * @returns
-     */
-    internalApi.getInfoAutoTile = function getInfoAutoTile() {
-        return autoTilesConfig;
-    };
-    /**
-     *
-     * @returns
-     */
-    internalApi.inEditor = function inEditor() {
-        return !Agtk || typeof Agtk.log !== 'function';
-    };
-    /**
-     *
-     * @returns
-     */
-    internalApi.inPlayer = function inPlayer() {
-        return !!Agtk && typeof Agtk.version === 'string' && /^player .+$/.test(Agtk.version);
-    };
-    /**
-     *
-     * @param arg1
-     */
-    self.setLocale = function setLocale(arg1) {
-        internalApi.localization.setLocale(arg1);
-    };
-    /**
-     *
-     * @param category
-     * @returns
-     */
-    self.getInfo = function getInfo(category) {
-        var info;
-        switch (category) {
-            case plugin_1.AgtkPluginInfoCategory.Name:
-                info = internalApi.localization.get(localization_1.PluginLocalizationRequiredKey.Name);
-                break;
-            case plugin_1.AgtkPluginInfoCategory.Description:
-                info = internalApi.localization.get(localization_1.PluginLocalizationRequiredKey.Description);
-                break;
-            case plugin_1.AgtkPluginInfoCategory.Author:
-                info = internalApi.localization.get(localization_1.PluginLocalizationRequiredKey.Author);
-                break;
-            case plugin_1.AgtkPluginInfoCategory.Help:
-                info = internalApi.localization.get(localization_1.PluginLocalizationRequiredKey.Help);
-                break;
-            case plugin_1.AgtkPluginInfoCategory.Parameter:
-                info = internalApi.getInfoParameter();
-                break;
-            case plugin_1.AgtkPluginInfoCategory.Internal:
-                info = internalApi.getInfoInternal();
-                break;
-            case plugin_1.AgtkPluginInfoCategory.ActionCommand:
-                info = internalApi.getInfoActionCommand();
-                break;
-            case plugin_1.AgtkPluginInfoCategory.LinkCondition:
-                info = internalApi.getInfoLinkCondition();
-                break;
-            case plugin_1.AgtkPluginInfoCategory.AutoTile:
-                info = internalApi.getInfoAutoTile();
-                break;
-        }
-        return info;
-    };
-    /**
-     *
-     * @param data
-     */
-    self.initialize = function initialize(data) {
-        if (data) {
-            self.setInternal(data);
-        }
-    };
-    /**
-     *
-     * @returns
-     */
-    self.finalize = function finalize() {
-        return;
-    };
-    /**
-     *
-     * @returns
-     */
-    self.setParamValue = function setParamValue() {
-        return;
-    };
-    /**
-     *
-     * @param data
-     */
-    self.setInternal = function setInternal(data) {
-        internalApi.internalData = JSON.parse(JSON.stringify(data)) || internalApi.internalData;
-    };
-    /**
-     *
-     * @returns
-     */
-    self.call = function call() {
-        return;
-    };
-    return self;
-}
-exports.createPlugin = createPlugin;
-//# sourceMappingURL=create-plugin.js.map
+    JsonLogicConnective["Xnor"] = "XNOR";
+})(JsonLogicConnective = exports.JsonLogicConnective || (exports.JsonLogicConnective = {}));
+//# sourceMappingURL=json-logic-connective.enum.js.map
 
 /***/ }),
 
-/***/ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/create-manager.js":
-/*!*****************************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/create-manager.js ***!
-  \*****************************************************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createPluginLocalizationManager = void 0;
-var plugin_ui_parameter_type_1 = __webpack_require__(/*! @agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-parameter-type */ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-parameter-type.js");
-/**
- *
- * @param config
- * @returns
- */
-function createPluginLocalizationManager(config) {
-    /**
-     *
-     */
-    var self = {};
-    // Resolve configuration.
-    var localizations = config.localizations && config.localizations.length > 0
-        ? config.localizations
-        : [{ locale: 'en', data: {} }];
-    /**
-     *
-     */
-    var fallbackData = localizations[0].data;
-    /**
-     *
-     */
-    var currentLocale = localizations[0].locale;
-    /**
-     *
-     */
-    var localeMap = {};
-    // Load locale map.
-    for (var i = 0; i < localizations.length; ++i) {
-        localeMap[localizations[i].locale] = localizations[i].data;
-    }
-    /**
-     *
-     */
-    var inlineRegex = /^loca\((.+)\)$/;
-    /**
-     *
-     * @param key
-     * @returns
-     */
-    self.get = function get(key) {
-        var loca = currentLocale.substring(0, 2);
-        if (localeMap[loca] && typeof localeMap[loca][key] === 'string') {
-            return localeMap[loca][key];
-        }
-        if (typeof fallbackData[key] === 'string') {
-            return fallbackData[key];
-        }
-        return "LOCA MISSING: ".concat(key);
-    };
-    /**
-     *
-     * @returns
-     */
-    self.getLocale = function getLocale() {
-        return currentLocale;
-    };
-    /**
-     *
-     * @param locale
-     * @returns
-     */
-    self.setLocale = function setLocale(locale) {
-        if (!localeMap[locale.substring(0, 2)]) {
-            return false;
-        }
-        currentLocale = locale;
-        return true;
-    };
-    /**
-     *
-     * @param parameters
-     * @returns
-     */
-    self.processParameterLocale = function processParameterLocale(parameters) {
-        for (var i = 0; i < parameters.length; ++i) {
-            var parameter = parameters[i];
-            var matches = parameter.name.match(inlineRegex);
-            if (matches && matches.length > 1) {
-                parameter.name = self.get(matches[1]);
-            }
-            switch (parameter.type) {
-                case plugin_ui_parameter_type_1.AgtkPluginUiParameterType.String:
-                case plugin_ui_parameter_type_1.AgtkPluginUiParameterType.MultiLineString:
-                    matches = parameter.defaultValue.match(inlineRegex);
-                    if (matches && matches.length > 1) {
-                        parameter.defaultValue = self.get(matches[1]);
-                    }
-                    break;
-                case plugin_ui_parameter_type_1.AgtkPluginUiParameterType.CustomId:
-                    for (var j = 0; j < parameter.customParam.length; ++j) {
-                        var param = parameter.customParam[j];
-                        matches = param.name.match(inlineRegex);
-                        if (matches && matches.length > 1) {
-                            param.name = self.get(matches[1]);
-                        }
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-        return parameters;
-    };
-    /**
-     *
-     * @param executeCommands
-     * @returns
-     */
-    self.processExecuteCommandLocale = function processExecuteCommandLocale(executeCommands) {
-        for (var i = 0; i < executeCommands.length; ++i) {
-            var executeCommand = executeCommands[i];
-            var matches = executeCommand.name.match(inlineRegex);
-            if (matches && matches.length > 1) {
-                executeCommand.name = self.get(matches[1]);
-            }
-            matches = executeCommand.description.match(inlineRegex);
-            if (matches && matches.length > 1) {
-                executeCommand.description = self.get(matches[1]);
-            }
-            self.processParameterLocale(executeCommand.parameter);
-        }
-        return executeCommands;
-    };
-    /**
-     *
-     * @param linkConditions
-     * @returns
-     */
-    self.processLinkConditionLocale = function processLinkConditionLocale(linkConditions) {
-        for (var i = 0; i < linkConditions.length; ++i) {
-            var linkCondition = linkConditions[i];
-            var matches = linkCondition.name.match(inlineRegex);
-            if (matches && matches.length > 1) {
-                linkCondition.name = self.get(matches[1]);
-            }
-            matches = linkCondition.description.match(inlineRegex);
-            if (matches && matches.length > 1) {
-                linkCondition.description = self.get(matches[1]);
-            }
-            self.processParameterLocale(linkCondition.parameter);
-        }
-        return linkConditions;
-    };
-    return self;
-}
-exports.createPluginLocalizationManager = createPluginLocalizationManager;
-//# sourceMappingURL=create-manager.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/data.js":
-/*!*******************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/data.js ***!
-  \*******************************************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-var required_key_1 = __webpack_require__(/*! ./required-key */ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/required-key.js");
-//# sourceMappingURL=data.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/index.js":
-/*!********************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/index.js ***!
-  \********************************************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-__exportStar(__webpack_require__(/*! ./create-manager */ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/create-manager.js"), exports);
-__exportStar(__webpack_require__(/*! ./localization */ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/localization.js"), exports);
-__exportStar(__webpack_require__(/*! ./data */ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/data.js"), exports);
-__exportStar(__webpack_require__(/*! ./manager */ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/manager.js"), exports);
-__exportStar(__webpack_require__(/*! ./manager-config */ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/manager-config.js"), exports);
-__exportStar(__webpack_require__(/*! ./required-key */ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/required-key.js"), exports);
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/localization.js":
-/*!***************************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/localization.js ***!
-  \***************************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-//# sourceMappingURL=localization.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/manager-config.js":
-/*!*****************************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/manager-config.js ***!
-  \*****************************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-//# sourceMappingURL=manager-config.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/manager.js":
-/*!**********************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/manager.js ***!
-  \**********************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-//# sourceMappingURL=manager.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/required-key.js":
-/*!***************************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-plugin-support/src/localization/required-key.js ***!
-  \***************************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.PluginLocalizationRequiredKey = void 0;
-/**
- *
- */
-var PluginLocalizationRequiredKey;
-(function (PluginLocalizationRequiredKey) {
-    /**
-     *
-     */
-    PluginLocalizationRequiredKey["Name"] = "PLUGIN_NAME";
-    /**
-     *
-     */
-    PluginLocalizationRequiredKey["Description"] = "PLUGIN_DESCRIPTION";
-    /**
-     *
-     */
-    PluginLocalizationRequiredKey["Author"] = "PLUGIN_AUTHOR";
-    /**
-     *
-     */
-    PluginLocalizationRequiredKey["Help"] = "PLUGIN_HELP";
-})(PluginLocalizationRequiredKey = exports.PluginLocalizationRequiredKey || (exports.PluginLocalizationRequiredKey = {}));
-//# sourceMappingURL=required-key.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-resource-support/src/cache/create-cache.js":
-/*!**********************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-resource-support/src/cache/create-cache.js ***!
-  \**********************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createResourceCache = void 0;
-/**
- *
- * @param internal
- * @returns
- */
-function createResourceCache(internal) {
-    /**
-     *
-     */
-    var self = {};
-    /**
-     *
-     */
-    var internalApi = internal || {};
-    /**
-     *
-     */
-    internalApi.cache = {};
-    /**
-     *
-     * @returns
-     */
-    self.clear = function clear() {
-        var keys = Object.keys(internalApi.cache);
-        for (var i = 0; i < keys.length; ++i) {
-            delete internalApi.cache[keys[i]];
-        }
-        return self;
-    };
-    /**
-     *
-     * @param key
-     * @returns
-     */
-    self.delete = function (key) {
-        delete internalApi.cache[key];
-        return self;
-    };
-    /**
-     *
-     * @param key
-     * @returns
-     */
-    self.get = function get(key) {
-        return internalApi.cache[key];
-    };
-    /**
-     *
-     * @param key
-     * @returns
-     */
-    self.has = function has(key) {
-        return !!internalApi.cache[key];
-    };
-    /**
-     *
-     * @param key
-     * @param value
-     * @returns
-     */
-    self.set = function set(key, value) {
-        internalApi.cache[key] = value;
-        return self;
-    };
-    return self;
-}
-exports.createResourceCache = createResourceCache;
-//# sourceMappingURL=create-cache.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-resource-support/src/json/to-json.js":
-/*!****************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-resource-support/src/json/to-json.js ***!
-  \****************************************************************************/
+/***/ "./node_modules/@agogpixel/pgmmv-resource-support/src/json/to-json.function.js":
+/*!*************************************************************************************!*\
+  !*** ./node_modules/@agogpixel/pgmmv-resource-support/src/json/to-json.function.js ***!
+  \*************************************************************************************/
 /***/ (function(__unused_webpack_module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.toJson = void 0;
+////////////////////////////////////////////////////////////////////////////////
+// Public Static Properties
+////////////////////////////////////////////////////////////////////////////////
+// None.
+////////////////////////////////////////////////////////////////////////////////
+// Private Static Properties
+////////////////////////////////////////////////////////////////////////////////
+// None.
+////////////////////////////////////////////////////////////////////////////////
+// Public Static Methods
+////////////////////////////////////////////////////////////////////////////////
 /**
+ * Custom JSON stringify method that can handle some non-JSON data types (Date,
+ * Symbol, etc.). Capable of custom indent sizing & function stringification.
  *
- * @param value
- * @returns
- */
-function isArray(value) {
-    return Array.isArray(value) && typeof value === 'object';
-}
-/**
+ * Cycle safe - already visited references will result in "[seen object]" or
+ * "[seen array]" string literals.
  *
- * @param value
- * @returns
- */
-function isObject(value) {
-    return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
-/**
- *
- * @param value
- * @returns
- */
-function isString(value) {
-    return typeof value === 'string';
-}
-/**
- *
- * @param value
- * @returns
- */
-function isBoolean(value) {
-    return typeof value === 'boolean';
-}
-/**
- *
- * @param value
- * @returns
- */
-function isNumber(value) {
-    return typeof value === 'number';
-}
-/**
- *
- * @param value
- * @returns
- */
-function isNull(value) {
-    return value === null && typeof value === 'object';
-}
-/**
- *
- * @param value
- * @returns
- */
-function isNotNumber(value) {
-    return typeof value === 'number' && isNaN(value);
-}
-/**
- *
- * @param value
- * @returns
- */
-function isInfinity(value) {
-    return typeof value === 'number' && !isFinite(value);
-}
-/**
- *
- * @param value
- * @returns
- */
-function isDate(value) {
-    return typeof value === 'object' && value !== null && typeof value.getMonth === 'function';
-}
-/**
- *
- * @param value
- * @returns
- */
-function isUndefined(value) {
-    return value === undefined && typeof value === 'undefined';
-}
-/**
- *
- * @param value
- * @returns
- */
-function isFunction(value) {
-    return typeof value === 'function';
-}
-/**
- *
- * @param value
- * @returns
- */
-function isSymbol(value) {
-    return typeof value === 'symbol';
-}
-/**
- *
- * @param value
- * @returns
- */
-function restOfDataTypes(value) {
-    return isNumber(value) || isString(value) || isBoolean(value);
-}
-/**
- *
- * @param value
- * @returns
- */
-function ignoreDataTypes(value) {
-    return isUndefined(value) || isSymbol(value);
-}
-/**
- *
- * @param value
- * @returns
- */
-function nullDataTypes(value) {
-    return isNotNumber(value) || isInfinity(value) || isNull(value);
-}
-/**
- *
- * @param value
- * @returns
- */
-function arrayValuesNullTypes(value) {
-    return isNotNumber(value) || isInfinity(value) || isNull(value) || ignoreDataTypes(value);
-}
-/**
- *
- * @param str
- * @param newline
- * @returns
- */
-function removeComma(str, newline) {
-    var tempArr;
-    if (!newline) {
-        tempArr = str.split('');
-    }
-    else {
-        tempArr = str.trimRight().split('');
-    }
-    tempArr.pop();
-    return tempArr.join('') + (newline ? '\n' : '');
-}
-/**
- *
- * @param value
- * @param space
- * @param stringifyFunctions
- * @returns
+ * @param value Value to convert to a JSON encoded string.
+ * @param space Amount of space characters in an indent. 0 will result in a
+ * single line.
+ * @param stringifyFunctions Stringify functions?
+ * @returns A JSON encoded string.
+ * @public
+ * @static
  */
 function toJson(value, space, stringifyFunctions) {
     var seen = [];
     var indentSize = typeof space === 'number' && space >= 0 ? space : 2;
     function parse(obj, indent) {
-        var _a;
         if (ignoreDataTypes(obj)) {
             return undefined;
         }
@@ -1315,13 +1362,12 @@ function toJson(value, space, stringifyFunctions) {
         if (nullDataTypes(obj)) {
             return "".concat(null);
         }
-        if (isSymbol(obj)) {
-            return undefined;
-        }
         if (isFunction(obj)) {
             if (stringifyFunctions) {
-                var fnParts = (_a = (isFunction(obj === null || obj === void 0 ? void 0 : obj.toString) ? obj === null || obj === void 0 ? void 0 : obj.toString() : 'function')) === null || _a === void 0 ? void 0 : _a.split('\n');
-                return fnParts === null || fnParts === void 0 ? void 0 : fnParts.join("".concat(!indentSize ? '' : '\n' + ' '.repeat(indentSize)));
+                var fnParts = (isFunction(obj.toString)
+                    ? obj.toString()
+                    : '"function"').split('\n');
+                return fnParts.join("".concat(!indentSize ? '' : '\n' + ' '.repeat(indentSize)));
             }
             return undefined;
         }
@@ -1331,12 +1377,15 @@ function toJson(value, space, stringifyFunctions) {
         }
         if (isArray(obj) || isObject(obj)) {
             if (seen.indexOf(obj) >= 0) {
-                return "[seen ".concat(isArray(obj) ? 'array' : 'object', "]");
+                return "\"[seen ".concat(isArray(obj) ? 'array' : 'object', "]\"");
             }
             seen.push(obj);
         }
         if (isArray(obj)) {
             var arrStr_1 = '';
+            if (!obj.length) {
+                return '[]';
+            }
             obj.forEach(function (eachValue) {
                 arrStr_1 +=
                     ' '.repeat(indent + indentSize) +
@@ -1348,6 +1397,9 @@ function toJson(value, space, stringifyFunctions) {
         if (isObject(obj)) {
             var objStr_1 = '';
             var objKeys = Object.keys(obj);
+            if (!objKeys.length) {
+                return '{}';
+            }
             objKeys.forEach(function (eachKey) {
                 var eachValue = obj[eachKey];
                 objStr_1 += !ignoreDataTypes(eachValue)
@@ -1360,128 +1412,254 @@ function toJson(value, space, stringifyFunctions) {
     return parse(value, 0);
 }
 exports.toJson = toJson;
-//# sourceMappingURL=to-json.js.map
+////////////////////////////////////////////////////////////////////////////////
+// Private Static Methods
+////////////////////////////////////////////////////////////////////////////////
+/**
+ * Test if specified value is an array.
+ *
+ * @param value Value to test.
+ * @returns True when value is an array, false otherwise.
+ * @private
+ * @static
+ */
+function isArray(value) {
+    return Array.isArray(value) && typeof value === 'object';
+}
+/**
+ * Test if specified value is an object.
+ *
+ * @param value Value to test.
+ * @returns True when value is a non-null & non-array object, false otherwise.
+ * @private
+ * @static
+ */
+function isObject(value) {
+    return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+/**
+ * Test if specified value is a string.
+ *
+ * @param value Value to test.
+ * @returns True when value is a string, false otherwise.
+ * @private
+ * @static
+ */
+function isString(value) {
+    return typeof value === 'string';
+}
+/**
+ * Test if specified value is a boolean.
+ *
+ * @param value Value to test.
+ * @returns True when value is a boolean, false otherwise.
+ * @private
+ * @static
+ */
+function isBoolean(value) {
+    return typeof value === 'boolean';
+}
+/**
+ * Test if specified value is a number.
+ *
+ * @param value Value to test.
+ * @returns True when value is a number, false otherwise.
+ * @private
+ * @static
+ */
+function isNumber(value) {
+    return typeof value === 'number';
+}
+/**
+ * Test if specified value is null.
+ *
+ * @param value Value to test.
+ * @returns True when value is null, false otherwise.
+ * @private
+ * @static
+ */
+function isNull(value) {
+    return value === null && typeof value === 'object';
+}
+/**
+ * Test if value is a number type, but invalid.
+ *
+ * @param value Value to test.
+ * @returns True when value is a number type but invalid, false otherwise.
+ * @private
+ * @static
+ */
+function isNotNumber(value) {
+    return typeof value === 'number' && isNaN(value);
+}
+/**
+ * Test if value is infinity.
+ *
+ * @param value Value to test.
+ * @returns True when value is infinity, false otherwise.
+ * @private
+ * @static
+ */
+function isInfinity(value) {
+    return typeof value === 'number' && !isFinite(value);
+}
+/**
+ * Test if value is a [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date)
+ * instance.
+ *
+ * @param value Value to test.
+ * @returns True when value is a Date instance, false otherwise.
+ * @private
+ * @static
+ */
+function isDate(value) {
+    return typeof value === 'object' && value !== null && typeof value.getMonth === 'function';
+}
+/**
+ * Test if value is undefined.
+ *
+ * @param value Value to test.
+ * @returns True when value is undefined, false otherwise.
+ * @private
+ * @static
+ */
+function isUndefined(value) {
+    return value === undefined && typeof value === 'undefined';
+}
+/**
+ * Test if value is a function.
+ *
+ * @param value Value to test.
+ * @returns True when value is a function, false otherwise.
+ * @private
+ * @static
+ */
+function isFunction(value) {
+    return typeof value === 'function';
+}
+/**
+ * Test if value is a symbol.
+ *
+ * @param value Value to test.
+ * @returns True when value is a symbol, false otherwise.
+ * @private
+ * @static
+ */
+function isSymbol(value) {
+    return typeof value === 'symbol';
+}
+/**
+ * Test if value is a number, string, or boolean.
+ *
+ * @param value Value to test.
+ * @returns True when value is a number, string, or boolean. False otherwise.
+ * @private
+ * @static
+ */
+function restOfDataTypes(value) {
+    return isNumber(value) || isString(value) || isBoolean(value);
+}
+/**
+ * Test if value is undefined or a symbol.
+ *
+ * @param value Value to test.
+ * @returns True when value is undefined or a symbol, false otherwise.
+ * @private
+ * @static
+ */
+function ignoreDataTypes(value) {
+    return isUndefined(value) || isSymbol(value);
+}
+/**
+ * Test if value is a number type (but invalid), infinity, or null.
+ *
+ * @param value Value to test.
+ * @returns True when value is a number type (but invalid), infinity, or null.
+ * False otherwise.
+ * @private
+ * @static
+ */
+function nullDataTypes(value) {
+    return isNotNumber(value) || isInfinity(value) || isNull(value);
+}
+/**
+ * Test if value is a number type (but invalid), infinity, null, undefined, or
+ * symbol.
+ *
+ * @param value Value to test.
+ * @returns True when value is a number type (but invalid), infinity, null,
+ * undefined, or symbol. False otherwise.
+ * @private
+ * @static
+ */
+function arrayValuesNullTypes(value) {
+    return nullDataTypes(value) || ignoreDataTypes(value);
+}
+/**
+ * Remove a trailing comma from a string with trailing newline support.
+ *
+ * @param str String to remove comma from.
+ * @param newline Account for trailing newline?
+ * @returns A string with trailing comma removed.
+ * @private
+ * @static
+ */
+function removeComma(str, newline) {
+    var tempArr;
+    if (!newline) {
+        tempArr = str.split('');
+    }
+    else {
+        tempArr = str.trimEnd().split('');
+    }
+    tempArr.pop();
+    return tempArr.join('') + (newline ? '\n' : '');
+}
+//# sourceMappingURL=to-json.function.js.map
 
 /***/ }),
 
-/***/ "./node_modules/@agogpixel/pgmmv-resource-support/src/time/get-unix-timestamp.js":
-/*!***************************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-resource-support/src/time/get-unix-timestamp.js ***!
-  \***************************************************************************************/
+/***/ "./node_modules/@agogpixel/pgmmv-resource-support/src/time/get-unix-timestamp.function.js":
+/*!************************************************************************************************!*\
+  !*** ./node_modules/@agogpixel/pgmmv-resource-support/src/time/get-unix-timestamp.function.js ***!
+  \************************************************************************************************/
 /***/ (function(__unused_webpack_module, exports) {
 
 
+/**
+ * Exports unix timestamp function.
+ *
+ * @module time/get-unix-timestamp.function
+ */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getUnixTimestamp = void 0;
+////////////////////////////////////////////////////////////////////////////////
+// Public Static Properties
+////////////////////////////////////////////////////////////////////////////////
+// None.
+////////////////////////////////////////////////////////////////////////////////
+// Private Static Properties
+////////////////////////////////////////////////////////////////////////////////
+// None.
+////////////////////////////////////////////////////////////////////////////////
+// Public Static Methods
+////////////////////////////////////////////////////////////////////////////////
 /**
+ * Get a unix timestamp (time in seconds since Unix epoch).
  *
- * @returns
+ * @returns Time in seconds since Unix epoch.
+ * @public
+ * @static
  */
 function getUnixTimestamp() {
     return Math.round(+new Date() / 1000);
 }
 exports.getUnixTimestamp = getUnixTimestamp;
-//# sourceMappingURL=get-unix-timestamp.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/action-command-plugin.js":
-/*!***********************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/action-command-plugin.js ***!
-  \***********************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-//# sourceMappingURL=action-command-plugin.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/auto-tile-plugin.js":
-/*!******************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/auto-tile-plugin.js ***!
-  \******************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-//# sourceMappingURL=auto-tile-plugin.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/index.js":
-/*!*******************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/index.js ***!
-  \*******************************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-__exportStar(__webpack_require__(/*! ./action-command-plugin */ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/action-command-plugin.js"), exports);
-__exportStar(__webpack_require__(/*! ./auto-tile-plugin */ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/auto-tile-plugin.js"), exports);
-__exportStar(__webpack_require__(/*! ./link-condition-plugin */ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/link-condition-plugin.js"), exports);
-__exportStar(__webpack_require__(/*! ./plugin */ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin.js"), exports);
-__exportStar(__webpack_require__(/*! ./plugin-action-command */ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-action-command.js"), exports);
-__exportStar(__webpack_require__(/*! ./plugin-auto-tile-parameters */ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-auto-tile-parameters.js"), exports);
-__exportStar(__webpack_require__(/*! ./plugin-info */ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-info.js"), exports);
-__exportStar(__webpack_require__(/*! ./plugin-info-category */ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-info-category.js"), exports);
-__exportStar(__webpack_require__(/*! ./plugin-link-condition */ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-link-condition.js"), exports);
-__exportStar(__webpack_require__(/*! ./plugin-ui-custom-id-parameter */ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-custom-id-parameter.js"), exports);
-__exportStar(__webpack_require__(/*! ./plugin-ui-custom-id-parameter-param */ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-custom-id-parameter-param.js"), exports);
-__exportStar(__webpack_require__(/*! ./plugin-ui-embedded-parameter */ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-embedded-parameter.js"), exports);
-__exportStar(__webpack_require__(/*! ./plugin-ui-id-parameter */ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-id-parameter.js"), exports);
-__exportStar(__webpack_require__(/*! ./plugin-ui-json-parameter */ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-json-parameter.js"), exports);
-__exportStar(__webpack_require__(/*! ./plugin-ui-number-parameter */ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-number-parameter.js"), exports);
-__exportStar(__webpack_require__(/*! ./plugin-ui-parameter */ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-parameter.js"), exports);
-__exportStar(__webpack_require__(/*! ./plugin-ui-parameter-type */ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-parameter-type.js"), exports);
-__exportStar(__webpack_require__(/*! ./plugin-ui-string-parameter */ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-string-parameter.js"), exports);
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/link-condition-plugin.js":
-/*!***********************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/link-condition-plugin.js ***!
-  \***********************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-//# sourceMappingURL=link-condition-plugin.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-action-command.js":
-/*!***********************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-action-command.js ***!
-  \***********************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-//# sourceMappingURL=plugin-action-command.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-auto-tile-parameters.js":
-/*!*****************************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-auto-tile-parameters.js ***!
-  \*****************************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-//# sourceMappingURL=plugin-auto-tile-parameters.js.map
+////////////////////////////////////////////////////////////////////////////////
+// Private Static Methods
+////////////////////////////////////////////////////////////////////////////////
+// None.
+//# sourceMappingURL=get-unix-timestamp.function.js.map
 
 /***/ }),
 
@@ -1507,102 +1685,6 @@ var AgtkPluginInfoCategory;
     AgtkPluginInfoCategory["AutoTile"] = "autoTile";
 })(AgtkPluginInfoCategory = exports.AgtkPluginInfoCategory || (exports.AgtkPluginInfoCategory = {}));
 //# sourceMappingURL=plugin-info-category.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-info.js":
-/*!*************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-info.js ***!
-  \*************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-//# sourceMappingURL=plugin-info.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-link-condition.js":
-/*!***********************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-link-condition.js ***!
-  \***********************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-//# sourceMappingURL=plugin-link-condition.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-custom-id-parameter-param.js":
-/*!*************************************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-custom-id-parameter-param.js ***!
-  \*************************************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-//# sourceMappingURL=plugin-ui-custom-id-parameter-param.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-custom-id-parameter.js":
-/*!*******************************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-custom-id-parameter.js ***!
-  \*******************************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-//# sourceMappingURL=plugin-ui-custom-id-parameter.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-embedded-parameter.js":
-/*!******************************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-embedded-parameter.js ***!
-  \******************************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-//# sourceMappingURL=plugin-ui-embedded-parameter.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-id-parameter.js":
-/*!************************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-id-parameter.js ***!
-  \************************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-//# sourceMappingURL=plugin-ui-id-parameter.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-json-parameter.js":
-/*!**************************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-json-parameter.js ***!
-  \**************************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-//# sourceMappingURL=plugin-ui-json-parameter.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-number-parameter.js":
-/*!****************************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-number-parameter.js ***!
-  \****************************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-//# sourceMappingURL=plugin-ui-number-parameter.js.map
 
 /***/ }),
 
@@ -1646,46 +1728,10 @@ var AgtkPluginUiParameterType;
 
 /***/ }),
 
-/***/ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-parameter.js":
-/*!*********************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-parameter.js ***!
-  \*********************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-//# sourceMappingURL=plugin-ui-parameter.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-string-parameter.js":
-/*!****************************************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-string-parameter.js ***!
-  \****************************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-//# sourceMappingURL=plugin-ui-string-parameter.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin.js":
-/*!********************************************************************!*\
-  !*** ./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin.js ***!
-  \********************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-//# sourceMappingURL=plugin.js.map
-
-/***/ }),
-
-/***/ "./src/create-gestalt-input-plugin.ts":
-/*!********************************************!*\
-  !*** ./src/create-gestalt-input-plugin.ts ***!
-  \********************************************/
+/***/ "./src/create-gestalt-input-plugin.function.ts":
+/*!*****************************************************!*\
+  !*** ./src/create-gestalt-input-plugin.function.ts ***!
+  \*****************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -1694,159 +1740,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.createGestaltInputPlugin = void 0;
-var create_logger_1 = __webpack_require__(/*! @agogpixel/pgmmv-logging-support/src/create-logger */ "./node_modules/@agogpixel/pgmmv-logging-support/src/create-logger.js");
-var get_controller_id_1 = __webpack_require__(/*! @agogpixel/pgmmv-object-support/src/object-instance/get-controller-id */ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/get-controller-id.js");
-var get_object_instance_1 = __webpack_require__(/*! @agogpixel/pgmmv-object-support/src/object-instance/get-object-instance */ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/get-object-instance.js");
-var get_parent_object_instance_1 = __webpack_require__(/*! @agogpixel/pgmmv-object-support/src/object-instance/get-parent-object-instance */ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/get-parent-object-instance.js");
-var create_plugin_1 = __webpack_require__(/*! @agogpixel/pgmmv-plugin-support/src/create-plugin */ "./node_modules/@agogpixel/pgmmv-plugin-support/src/create-plugin.js");
-var create_cache_1 = __webpack_require__(/*! @agogpixel/pgmmv-resource-support/src/cache/create-cache */ "./node_modules/@agogpixel/pgmmv-resource-support/src/cache/create-cache.js");
-var input_condition_1 = __webpack_require__(/*! ./input-condition */ "./src/input-condition/index.ts");
-var link_conditions_1 = __webpack_require__(/*! ./link-conditions */ "./src/link-conditions.ts");
+/**
+ * Exports a Gestalt Input plugin instance factory.
+ *
+ * @module
+ */
+var create_logger_function_1 = __webpack_require__(/*! @agogpixel/pgmmv-logging-support/src/create-logger.function */ "./node_modules/@agogpixel/pgmmv-logging-support/src/create-logger.function.js");
+var create_plugin_function_1 = __webpack_require__(/*! @agogpixel/pgmmv-plugin-support/src/create-plugin.function */ "./node_modules/@agogpixel/pgmmv-plugin-support/src/create-plugin.function.js");
+var create_resource_cache_function_1 = __webpack_require__(/*! @agogpixel/pgmmv-resource-support/src/cache/create-resource-cache.function */ "./node_modules/@agogpixel/pgmmv-resource-support/src/cache/create-resource-cache.function.js");
+var link_conditions_1 = __webpack_require__(/*! ./link-conditions */ "./src/link-conditions/index.ts");
 var locale_1 = __importDefault(__webpack_require__(/*! ./locale */ "./src/locale/index.ts"));
 /**
  *
  */
-var pluginBanner = "\nGestalt Input Plugin v".concat("0.2.0-dev", "\nCopyright 2022 AgogPixel - All Rights Reserved\n");
+var pluginBanner = "\nGestalt Input Plugin v".concat("0.2.0-dev", "\n");
 /**
+ * Creates a plugin instance.
  *
- * @returns
+ * @returns Gestalt Input plugin instance.
  */
 function createGestaltInputPlugin() {
-    /**
-     *
-     */
     var internalApi = {};
-    /**
-     *
-     */
-    var self = (0, create_plugin_1.createPlugin)({ localizations: locale_1.default, linkConditions: link_conditions_1.linkConditions }, internalApi);
-    /**
-     *
-     */
-    var inputConditionCache = (0, create_cache_1.createResourceCache)();
-    /**
-     *
-     */
-    var allControllerIds;
-    /**
-     *
-     */
-    var logger;
-    /**
-     *
-     * @param parameters
-     * @returns
-     */
-    function extractInputConditionIdentifier(parameters) {
-        for (var i = 0; i < parameters.length; ++i) {
-            if (parameters[i].id === link_conditions_1.InputConditionParameterId.Identifier) {
-                return parameters[i].value.trim();
-            }
-        }
-        return link_conditions_1.inputConditionParameterDefaults.identifier;
-    }
-    /**
-     *
-     * @param parameters
-     * @returns
-     */
-    function parseInputCondition(parameters) {
-        var json = JSON.stringify(link_conditions_1.inputConditionParameterDefaults.json);
-        var fallback = link_conditions_1.inputConditionParameterDefaults.fallback;
-        var identifier = link_conditions_1.inputConditionParameterDefaults.identifier;
-        for (var i = 0; i < parameters.length; ++i) {
-            switch (parameters[i].id) {
-                case link_conditions_1.InputConditionParameterId.Json:
-                    json = parameters[i].value;
-                    break;
-                case link_conditions_1.InputConditionParameterId.Fallback:
-                    fallback = parameters[i].value;
-                    break;
-                case link_conditions_1.InputConditionParameterId.Identifier:
-                    identifier = parameters[i].value;
-                    break;
-            }
-        }
-        var intermediate = JSON.parse(json);
-        var result = (0, input_condition_1.transformInputClause)(intermediate);
-        if (Array.isArray(result)) {
-            logger.error("parseInputCondition ".concat(identifier, ": Invalid JSON logic detected:\n").concat(result.join('\n  - ')));
-            var warningLogged_1 = false;
-            return [
-                function () {
-                    if (!warningLogged_1) {
-                        logger.warn("".concat(identifier, ": Invalid input condition; defaulting to false & suppressing this message"));
-                        warningLogged_1 = true;
-                    }
-                    return false;
-                },
-                fallback
-            ];
-        }
-        return [result, fallback];
-    }
-    /**
-     *
-     * @param objectId
-     * @param instanceId
-     * @returns
-     */
-    function fetchControllerId(objectId, instanceId) {
-        var obj = Agtk.objects.get(objectId);
-        var instance = (0, get_object_instance_1.getObjectInstance)(instanceId);
-        var controllerId = (0, get_controller_id_1.getControllerId)(instance);
-        if (obj.operatable && controllerId >= 0) {
-            return controllerId;
-        }
-        var parentInstance = (0, get_parent_object_instance_1.getParentObjectInstance)(instance);
-        if (!parentInstance) {
-            return -1;
-        }
-        return fetchControllerId(parentInstance.objectId, parentInstance.id);
-    }
-    /**
-     *
-     * @param objectId
-     * @param instanceId
-     * @param actionLinkId
-     * @param commonActionStatus
-     * @param parameters
-     * @returns
-     */
-    function testInputCondition(objectId, instanceId, actionLinkId, parameters) {
-        var identifier = extractInputConditionIdentifier(parameters);
-        if (!identifier) {
-            logger.warn("testInputCondition {objectId: ".concat(objectId, ", instanceId: ").concat(instanceId, ", actionLinkId: ").concat(actionLinkId, "}: Unset identifier; defaulting to false"));
-            return false;
-        }
-        var cacheKey = "".concat(objectId, ",").concat(instanceId, ",").concat(identifier);
-        var inputCondition;
-        if (!inputConditionCache.has(cacheKey)) {
-            inputCondition = parseInputCondition(parameters);
-            inputConditionCache.set(cacheKey, inputCondition);
-        }
-        else {
-            inputCondition = inputConditionCache.get(cacheKey);
-        }
-        var clause = inputCondition[0];
-        var fallback = inputCondition[1];
-        var controllerId = fetchControllerId(objectId, instanceId);
-        if (controllerId < 0 && fallback === link_conditions_1.InputConditionFallbackParameterId.AlwaysFalse) {
-            return false;
-        }
-        var controllerIds = controllerId >= 0 ? [controllerId] : allControllerIds;
-        for (var i = 0; i < controllerIds.length; ++i) {
-            if (clause(controllerIds[i])) {
-                return true;
-            }
-        }
-        return false;
-    }
-    /**
-     *
-     * @param data
-     * @returns
-     */
+    var self = (0, create_plugin_function_1.createPlugin)({ localizations: locale_1.default, linkConditions: link_conditions_1.linkConditions }, internalApi);
+    internalApi.inputConditionCache = (0, create_resource_cache_function_1.createResourceCache)();
     self.initialize = function initialize(data) {
         if (!data) {
             data = {};
@@ -1855,35 +1771,19 @@ function createGestaltInputPlugin() {
         if (internalApi.inEditor()) {
             return;
         }
-        allControllerIds = [];
+        internalApi.allControllerIds = [];
         for (var i = 0; i <= Agtk.controllers.MaxControllerId; ++i) {
-            allControllerIds.push(i);
+            internalApi.allControllerIds.push(i);
         }
-        logger = (0, create_logger_1.createLogger)({
+        internalApi.logger = (0, create_logger_function_1.createLogger)({
             runtimeLog: function (arg1) {
                 Agtk.log("[Gestalt Input Plugin] ".concat(arg1));
             }
         });
         Agtk.log(pluginBanner);
     };
-    /**
-     *
-     * @param linkConditionIndex
-     * @param parameter
-     * @param objectId
-     * @param instanceId
-     * @param actionLinkId
-     * @param commonActionStatus Bug: set to undefined.
-     * @returns
-     */
-    self.execLinkCondition = function execLinkCondition(linkConditionIndex, parameter, objectId, instanceId, actionLinkId) {
-        switch (linkConditionIndex) {
-            case link_conditions_1.linkConditionIdToIndexMap[link_conditions_1.LinkConditionId.InputCondition]:
-                return testInputCondition(objectId, instanceId, actionLinkId, parameter);
-        }
-        var identifier = "{linkConditionIndex: ".concat(linkConditionIndex, ", objectId: ").concat(objectId, ", instanceId: ").concat(instanceId, ", actionLinkId: ").concat(actionLinkId, "}");
-        logger.warn("execLinkCondition ".concat(identifier, ": No matching link condition found; defaulting to false"));
-        return false;
+    self.execLinkCondition = function (linkConditionIndex, parameter, objectId, instanceId, actionLinkId) {
+        return (0, link_conditions_1.execLinkCondition)(internalApi, linkConditionIndex, internalApi.normalizeLinkConditionParameters(linkConditionIndex, parameter), objectId, instanceId, actionLinkId);
     };
     return self;
 }
@@ -1892,36 +1792,50 @@ exports.createGestaltInputPlugin = createGestaltInputPlugin;
 
 /***/ }),
 
-/***/ "./src/input-condition/controller-constant-prefix.ts":
-/*!***********************************************************!*\
-  !*** ./src/input-condition/controller-constant-prefix.ts ***!
-  \***********************************************************/
-/***/ (function(__unused_webpack_module, exports) {
+/***/ "./src/link-conditions/exec-link-condition.function.ts":
+/*!*************************************************************!*\
+  !*** ./src/link-conditions/exec-link-condition.function.ts ***!
+  \*************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.ControllerConstantPrefix = void 0;
+exports.execLinkCondition = void 0;
+var link_condition_id_enum_1 = __webpack_require__(/*! ./link-condition-id.enum */ "./src/link-conditions/link-condition-id.enum.ts");
+var link_condition_index_map_const_1 = __webpack_require__(/*! ./link-condition-index-map.const */ "./src/link-conditions/link-condition-index-map.const.ts");
+var input_condition_1 = __webpack_require__(/*! ./input-condition */ "./src/link-conditions/input-condition/index.ts");
 /**
+ * Evaluates link condition.
  *
+ * @param internalApi The plugin's internal API.
+ * @param linkConditionIndex The index of a given link condition.
+ * @param parameter Link condition data that is set in & provided by the PGMMV
+ * editor or runtime & subsequently normalized.
+ * @param objectId The object ID of the object instance through which the
+ * link condition is evaluating.
+ * @param instanceId The instance ID of the object instance through which the
+ * link condition is evaluating.
+ * @returns True if link condition is satisfied, false otherwise.
  */
-var ControllerConstantPrefix;
-(function (ControllerConstantPrefix) {
-    /**
-     *
-     */
-    ControllerConstantPrefix["Op"] = "OperationKey";
-    /**
-     *
-     */
-    ControllerConstantPrefix["Pc"] = "ReservedKeyCodePc_";
-})(ControllerConstantPrefix = exports.ControllerConstantPrefix || (exports.ControllerConstantPrefix = {}));
+function execLinkCondition(internalApi, linkConditionIndex, parameter, objectId, instanceId, actionLinkId) {
+    switch (linkConditionIndex) {
+        case link_condition_index_map_const_1.linkConditionIndexMap[link_condition_id_enum_1.LinkConditionId.InputCondition]:
+            return (0, input_condition_1.execInputConditionLinkCondition)(internalApi, parameter, objectId, instanceId, actionLinkId);
+        default:
+            break;
+    }
+    var identifier = "{linkConditionIndex: ".concat(linkConditionIndex, ", objectId: ").concat(objectId, ", instanceId: ").concat(instanceId, ", actionLinkId: ").concat(actionLinkId, "}");
+    internalApi.logger.warn("execLinkCondition ".concat(identifier, ": No matching link condition found; defaulting to false"));
+    return false;
+}
+exports.execLinkCondition = execLinkCondition;
 
 
 /***/ }),
 
-/***/ "./src/input-condition/index.ts":
+/***/ "./src/link-conditions/index.ts":
 /*!**************************************!*\
-  !*** ./src/input-condition/index.ts ***!
+  !*** ./src/link-conditions/index.ts ***!
   \**************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
@@ -1937,36 +1851,217 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-__exportStar(__webpack_require__(/*! ./controller-constant-prefix */ "./src/input-condition/controller-constant-prefix.ts"), exports);
-__exportStar(__webpack_require__(/*! ./input-key */ "./src/input-condition/input-key.ts"), exports);
-__exportStar(__webpack_require__(/*! ./input-key-prefix */ "./src/input-condition/input-key-prefix.ts"), exports);
-__exportStar(__webpack_require__(/*! ./transform-clause */ "./src/input-condition/transform-clause.ts"), exports);
-__exportStar(__webpack_require__(/*! ./transform-input-condition */ "./src/input-condition/transform-input-condition.ts"), exports);
-__exportStar(__webpack_require__(/*! ./validate-input-condition */ "./src/input-condition/validate-input-condition.ts"), exports);
+/**
+ * Exports link condition configurations & functions.
+ *
+ * @module link-conditions
+ */
+__exportStar(__webpack_require__(/*! ./exec-link-condition.function */ "./src/link-conditions/exec-link-condition.function.ts"), exports);
+__exportStar(__webpack_require__(/*! ./link-condition-id.enum */ "./src/link-conditions/link-condition-id.enum.ts"), exports);
+__exportStar(__webpack_require__(/*! ./link-condition-index-map.const */ "./src/link-conditions/link-condition-index-map.const.ts"), exports);
+__exportStar(__webpack_require__(/*! ./link-conditions.config */ "./src/link-conditions/link-conditions.config.ts"), exports);
 
 
 /***/ }),
 
-/***/ "./src/input-condition/input-key-prefix.ts":
-/*!*************************************************!*\
-  !*** ./src/input-condition/input-key-prefix.ts ***!
-  \*************************************************/
+/***/ "./src/link-conditions/input-condition/controller-constant-prefix.enum.ts":
+/*!********************************************************************************!*\
+  !*** ./src/link-conditions/input-condition/controller-constant-prefix.enum.ts ***!
+  \********************************************************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+
+/**
+ * Exports controller constant prefix enumeration.
+ *
+ * @module link-conditions/input-condition/controller-constant-prefix.enum
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ControllerConstantPrefix = void 0;
+/**
+ * Controller constant prefix enumeration.
+ */
+var ControllerConstantPrefix;
+(function (ControllerConstantPrefix) {
+    /**
+     * Op key prefix.
+     */
+    ControllerConstantPrefix["Op"] = "OperationKey";
+    /**
+     * Pc key prefix.
+     */
+    ControllerConstantPrefix["Pc"] = "ReservedKeyCodePc_";
+})(ControllerConstantPrefix = exports.ControllerConstantPrefix || (exports.ControllerConstantPrefix = {}));
+
+
+/***/ }),
+
+/***/ "./src/link-conditions/input-condition/exec-input-condition-link-condition.function.ts":
+/*!*********************************************************************************************!*\
+  !*** ./src/link-conditions/input-condition/exec-input-condition-link-condition.function.ts ***!
+  \*********************************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.execInputConditionLinkCondition = void 0;
+var fetch_controller_id_function_1 = __webpack_require__(/*! ./fetch-controller-id.function */ "./src/link-conditions/input-condition/fetch-controller-id.function.ts");
+var parameters_1 = __webpack_require__(/*! ./parameters */ "./src/link-conditions/input-condition/parameters/index.ts");
+var parse_input_condition_parameters_function_1 = __webpack_require__(/*! ./parse-input-condition-parameters.function */ "./src/link-conditions/input-condition/parse-input-condition-parameters.function.ts");
+/**
+ * Exec 'Input Condition' link condition.
+ *
+ * @param internalApi Plugin internal API reference.
+ * @param parameters Parsed link condition parameters.
+ * @param objectId Object ID.
+ * @param instanceId Instance ID.
+ * @param actionLinkId Action link ID
+ * @returns Boolean result based on current input & parsed input condition
+ * state.
+ */
+function execInputConditionLinkCondition(internalApi, parameters, objectId, instanceId, actionLinkId) {
+    var identifier = (parameters[parameters_1.InputConditionParameterId.Identifier] || '').trim();
+    if (!identifier) {
+        internalApi.logger.warn("testInputCondition {objectId: ".concat(objectId, ", instanceId: ").concat(instanceId, ", actionLinkId: ").concat(actionLinkId, "}: Unset identifier; defaulting to false"));
+        return false;
+    }
+    var cacheKey = "".concat(objectId, ",").concat(instanceId, ",").concat(identifier);
+    var inputCondition;
+    if (!internalApi.inputConditionCache.has(cacheKey)) {
+        inputCondition = (0, parse_input_condition_parameters_function_1.parseInputConditionParameters)(internalApi, parameters);
+        internalApi.inputConditionCache.set(cacheKey, inputCondition);
+    }
+    else {
+        inputCondition = internalApi.inputConditionCache.get(cacheKey);
+    }
+    var clause = inputCondition[0];
+    var fallback = inputCondition[1];
+    var controllerId = (0, fetch_controller_id_function_1.fetchControllerId)(objectId, instanceId);
+    if (controllerId < 0 && fallback === parameters_1.InputConditionFallbackParameterId.AlwaysFalse) {
+        return false;
+    }
+    var controllerIds = controllerId >= 0 ? [controllerId] : internalApi.allControllerIds;
+    for (var i = 0; i < controllerIds.length; ++i) {
+        if (clause(controllerIds[i])) {
+            return true;
+        }
+    }
+    return false;
+}
+exports.execInputConditionLinkCondition = execInputConditionLinkCondition;
+
+
+/***/ }),
+
+/***/ "./src/link-conditions/input-condition/fetch-controller-id.function.ts":
+/*!*****************************************************************************!*\
+  !*** ./src/link-conditions/input-condition/fetch-controller-id.function.ts ***!
+  \*****************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.fetchControllerId = void 0;
+/**
+ * Exports fetch controller ID function.
+ *
+ * @module link-conditions/input-condition/fetch-controller-id.function
+ */
+var get_object_instance_function_1 = __webpack_require__(/*! @agogpixel/pgmmv-object-support/src/object-instance/get-object-instance.function */ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/get-object-instance.function.js");
+var get_parent_object_instance_function_1 = __webpack_require__(/*! @agogpixel/pgmmv-object-support/src/object-instance/get-parent-object-instance.function */ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/get-parent-object-instance.function.js");
+var get_controller_id_function_1 = __webpack_require__(/*! @agogpixel/pgmmv-object-support/src/object-instance/variables/get-controller-id.function */ "./node_modules/@agogpixel/pgmmv-object-support/src/object-instance/variables/get-controller-id.function.js");
+/**
+ * Fetch controller ID.
+ *
+ * @param objectId Object ID.
+ * @param instanceId Instance ID.
+ * @returns Resolved controller ID or `-1`.
+ */
+function fetchControllerId(objectId, instanceId) {
+    var obj = Agtk.objects.get(objectId);
+    var instance = (0, get_object_instance_function_1.getObjectInstance)(instanceId);
+    var controllerId = (0, get_controller_id_function_1.getControllerId)(instance);
+    if (obj.operatable && controllerId >= 0) {
+        return controllerId;
+    }
+    var parentInstance = (0, get_parent_object_instance_function_1.getParentObjectInstance)(instance);
+    if (!parentInstance) {
+        return -1;
+    }
+    return fetchControllerId(parentInstance.objectId, parentInstance.id);
+}
+exports.fetchControllerId = fetchControllerId;
+
+
+/***/ }),
+
+/***/ "./src/link-conditions/input-condition/index.ts":
+/*!******************************************************!*\
+  !*** ./src/link-conditions/input-condition/index.ts ***!
+  \******************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+/**
+ * Exports 'Input Condition' link condition configurations & functions.
+ *
+ * @module link-conditions/input-condition
+ */
+__exportStar(__webpack_require__(/*! ./exec-input-condition-link-condition.function */ "./src/link-conditions/input-condition/exec-input-condition-link-condition.function.ts"), exports);
+__exportStar(__webpack_require__(/*! ./input-condition.type */ "./src/link-conditions/input-condition/input-condition.type.ts"), exports);
+__exportStar(__webpack_require__(/*! ./parameters */ "./src/link-conditions/input-condition/parameters/index.ts"), exports);
+
+
+/***/ }),
+
+/***/ "./src/link-conditions/input-condition/input-condition.type.ts":
+/*!*********************************************************************!*\
+  !*** ./src/link-conditions/input-condition/input-condition.type.ts ***!
+  \*********************************************************************/
 /***/ (function(__unused_webpack_module, exports) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+
+
+/***/ }),
+
+/***/ "./src/link-conditions/input-condition/input-key-prefix.enum.ts":
+/*!**********************************************************************!*\
+  !*** ./src/link-conditions/input-condition/input-key-prefix.enum.ts ***!
+  \**********************************************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+
+/**
+ * Exports input key prefix enumeration.
+ *
+ * @module link-conditions/input-condition/input-key-prefix.enum
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.InputKeyPrefix = void 0;
 /**
- *
+ * Input key prefix enumeration.
  */
 var InputKeyPrefix;
 (function (InputKeyPrefix) {
     /**
-     *
+     * Op input key prefix.
      */
     InputKeyPrefix["Op"] = "Op";
     /**
-     *
+     * Pc input key prefix.
      */
     InputKeyPrefix["Pc"] = "Pc";
 })(InputKeyPrefix = exports.InputKeyPrefix || (exports.InputKeyPrefix = {}));
@@ -1974,17 +2069,22 @@ var InputKeyPrefix;
 
 /***/ }),
 
-/***/ "./src/input-condition/input-key.ts":
-/*!******************************************!*\
-  !*** ./src/input-condition/input-key.ts ***!
-  \******************************************/
+/***/ "./src/link-conditions/input-condition/input-key.enum.ts":
+/*!***************************************************************!*\
+  !*** ./src/link-conditions/input-condition/input-key.enum.ts ***!
+  \***************************************************************/
 /***/ (function(__unused_webpack_module, exports) {
 
 
+/**
+ * Exports input key enumeration.
+ *
+ * @module link-conditions/input-condition/input-key.enum
+ */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.InputKey = void 0;
 /**
- *
+ * Input Key enumeration.
  */
 var InputKey;
 (function (InputKey) {
@@ -2034,55 +2134,254 @@ var InputKey;
 
 /***/ }),
 
-/***/ "./src/input-condition/transform-clause.ts":
-/*!*************************************************!*\
-  !*** ./src/input-condition/transform-clause.ts ***!
-  \*************************************************/
+/***/ "./src/link-conditions/input-condition/parameters/index.ts":
+/*!*****************************************************************!*\
+  !*** ./src/link-conditions/input-condition/parameters/index.ts ***!
+  \*****************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+/**
+ * Exports 'Input Condition' link condition UI parameters.
+ *
+ * @module link-conditions/input-condition/parameters
+ */
+__exportStar(__webpack_require__(/*! ./input-condition-fallback-parameter-id.enum */ "./src/link-conditions/input-condition/parameters/input-condition-fallback-parameter-id.enum.ts"), exports);
+__exportStar(__webpack_require__(/*! ./input-condition-parameter-id.enum */ "./src/link-conditions/input-condition/parameters/input-condition-parameter-id.enum.ts"), exports);
+__exportStar(__webpack_require__(/*! ./input-condition-parameters.config */ "./src/link-conditions/input-condition/parameters/input-condition-parameters.config.ts"), exports);
+
+
+/***/ }),
+
+/***/ "./src/link-conditions/input-condition/parameters/input-condition-fallback-parameter-id.enum.ts":
+/*!******************************************************************************************************!*\
+  !*** ./src/link-conditions/input-condition/parameters/input-condition-fallback-parameter-id.enum.ts ***!
+  \******************************************************************************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+
+/**
+ * Exports 'Input Condition' link condition fallback parameter ID enumerations.
+ *
+ * @module link-conditions/input-condition/parameters/input-condition-fallback-parameter-id.enum
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.InputConditionFallbackParameterId = void 0;
+/**
+ * 'Input Condition' link condition fallback parameter ID enumeration.
+ */
+var InputConditionFallbackParameterId;
+(function (InputConditionFallbackParameterId) {
+    /**
+     * Default parameter ID.
+     */
+    InputConditionFallbackParameterId[InputConditionFallbackParameterId["Default"] = 1] = "Default";
+    /**
+     * Always false parameter ID.
+     */
+    InputConditionFallbackParameterId[InputConditionFallbackParameterId["AlwaysFalse"] = 2] = "AlwaysFalse";
+})(InputConditionFallbackParameterId = exports.InputConditionFallbackParameterId || (exports.InputConditionFallbackParameterId = {}));
+
+
+/***/ }),
+
+/***/ "./src/link-conditions/input-condition/parameters/input-condition-parameter-id.enum.ts":
+/*!*********************************************************************************************!*\
+  !*** ./src/link-conditions/input-condition/parameters/input-condition-parameter-id.enum.ts ***!
+  \*********************************************************************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+
+/**
+ * Exports 'Input Condition' link condition parameter ID enumerations.
+ *
+ * @module link-conditions/input-condition/parameters/input-condition-parameter-id.enum
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.InputConditionParameterId = void 0;
+/**
+ * 'Input Condition' link condition parameter ID enumeration.
+ */
+var InputConditionParameterId;
+(function (InputConditionParameterId) {
+    /**
+     * JSON parameter ID.
+     */
+    InputConditionParameterId[InputConditionParameterId["Json"] = 1] = "Json";
+    /**
+     * Fallback parameter ID.
+     */
+    InputConditionParameterId[InputConditionParameterId["Fallback"] = 2] = "Fallback";
+    /**
+     * Identifier parameter ID.
+     */
+    InputConditionParameterId[InputConditionParameterId["Identifier"] = 3] = "Identifier";
+})(InputConditionParameterId = exports.InputConditionParameterId || (exports.InputConditionParameterId = {}));
+
+
+/***/ }),
+
+/***/ "./src/link-conditions/input-condition/parameters/input-condition-parameters.config.ts":
+/*!*********************************************************************************************!*\
+  !*** ./src/link-conditions/input-condition/parameters/input-condition-parameters.config.ts ***!
+  \*********************************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.inputConditionParameters = void 0;
+/**
+ * Exports 'Input Condition' link condition UI parameter configuration.
+ *
+ * @module link-conditions/input-condition/parameters/input-condition-parameters.config
+ */
+var plugin_ui_parameter_type_1 = __webpack_require__(/*! @agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-parameter-type */ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-parameter-type.js");
+var input_condition_fallback_parameter_id_enum_1 = __webpack_require__(/*! ./input-condition-fallback-parameter-id.enum */ "./src/link-conditions/input-condition/parameters/input-condition-fallback-parameter-id.enum.ts");
+var input_condition_parameter_id_enum_1 = __webpack_require__(/*! ./input-condition-parameter-id.enum */ "./src/link-conditions/input-condition/parameters/input-condition-parameter-id.enum.ts");
+/**
+ * 'Input Condition' link condition UI parameter configuration.
+ */
+exports.inputConditionParameters = [
+    {
+        id: input_condition_parameter_id_enum_1.InputConditionParameterId.Identifier,
+        name: 'loca(LINK_CONDITION_INPUT_CONDITION_PARAMETER_IDENTIFIER_NAME)',
+        type: plugin_ui_parameter_type_1.AgtkPluginUiParameterType.String,
+        defaultValue: 'loca(LINK_CONDITION_INPUT_CONDITION_PARAMETER_IDENTIFIER_DEFAULT_VALUE)'
+    },
+    {
+        id: input_condition_parameter_id_enum_1.InputConditionParameterId.Json,
+        name: 'loca(LINK_CONDITION_INPUT_CONDITION_PARAMETER_JSON_NAME)',
+        type: plugin_ui_parameter_type_1.AgtkPluginUiParameterType.Json,
+        defaultValue: ['Op_A', true]
+    },
+    {
+        id: input_condition_parameter_id_enum_1.InputConditionParameterId.Fallback,
+        name: 'loca(LINK_CONDITION_INPUT_CONDITION_PARAMETER_FALLBACK_NAME)',
+        type: plugin_ui_parameter_type_1.AgtkPluginUiParameterType.CustomId,
+        customParam: [
+            {
+                id: input_condition_fallback_parameter_id_enum_1.InputConditionFallbackParameterId.Default,
+                name: 'loca(LINK_CONDITION_INPUT_CONDITION_PARAMETER_FALLBACK_PARAM_DEFAULT_NAME)'
+            },
+            {
+                id: input_condition_fallback_parameter_id_enum_1.InputConditionFallbackParameterId.AlwaysFalse,
+                name: 'loca(LINK_CONDITION_INPUT_CONDITION_PARAMETER_FALLBACK_PARAM_ALWAYS_FALSE_NAME)'
+            }
+        ],
+        defaultValue: input_condition_fallback_parameter_id_enum_1.InputConditionFallbackParameterId.Default
+    }
+];
+
+
+/***/ }),
+
+/***/ "./src/link-conditions/input-condition/parse-input-condition-parameters.function.ts":
+/*!******************************************************************************************!*\
+  !*** ./src/link-conditions/input-condition/parse-input-condition-parameters.function.ts ***!
+  \******************************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.parseInputConditionParameters = void 0;
+var parameters_1 = __webpack_require__(/*! ./parameters */ "./src/link-conditions/input-condition/parameters/index.ts");
+var transform_input_clause_function_1 = __webpack_require__(/*! ./transform-input-clause.function */ "./src/link-conditions/input-condition/transform-input-clause.function.ts");
+/**
+ *
+ * @param parameters
+ * @returns
+ */
+function parseInputConditionParameters(internalApi, parameters) {
+    var json = parameters[parameters_1.InputConditionParameterId.Json];
+    var fallback = parameters[parameters_1.InputConditionParameterId.Fallback];
+    var identifier = parameters[parameters_1.InputConditionParameterId.Identifier];
+    var intermediate = JSON.parse(json);
+    var result = (0, transform_input_clause_function_1.transformInputClause)(intermediate);
+    if (Array.isArray(result)) {
+        internalApi.logger.error("parseInputConditionParameters ".concat(identifier, ": Invalid JSON logic detected:\n").concat(result.join('\n  - ')));
+        var warningLogged_1 = false;
+        return [
+            function () {
+                if (!warningLogged_1) {
+                    internalApi.logger.warn("".concat(identifier, ": Invalid input condition; defaulting to false & suppressing this message"));
+                    warningLogged_1 = true;
+                }
+                return false;
+            },
+            fallback
+        ];
+    }
+    return [result, fallback];
+}
+exports.parseInputConditionParameters = parseInputConditionParameters;
+
+
+/***/ }),
+
+/***/ "./src/link-conditions/input-condition/transform-input-clause.function.ts":
+/*!********************************************************************************!*\
+  !*** ./src/link-conditions/input-condition/transform-input-clause.function.ts ***!
+  \********************************************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.transformInputClause = void 0;
-var create_clause_transform_1 = __webpack_require__(/*! @agogpixel/pgmmv-link-condition-support/src/json-logic/create-clause-transform */ "./node_modules/@agogpixel/pgmmv-link-condition-support/src/json-logic/create-clause-transform.js");
-var transform_input_condition_1 = __webpack_require__(/*! ./transform-input-condition */ "./src/input-condition/transform-input-condition.ts");
-var validate_input_condition_1 = __webpack_require__(/*! ./validate-input-condition */ "./src/input-condition/validate-input-condition.ts");
+var create_json_logic_clause_transform_function_1 = __webpack_require__(/*! @agogpixel/pgmmv-resource-support/src/json/logic/create-json-logic-clause-transform.function */ "./node_modules/@agogpixel/pgmmv-resource-support/src/json/logic/create-json-logic-clause-transform.function.js");
+var transform_input_condition_function_1 = __webpack_require__(/*! ./transform-input-condition.function */ "./src/link-conditions/input-condition/transform-input-condition.function.ts");
+var validate_input_condition_function_1 = __webpack_require__(/*! ./validate-input-condition.function */ "./src/link-conditions/input-condition/validate-input-condition.function.ts");
 /**
+ * Transform input clause.
  *
+ * @param clause Input clause as JSON logic clause.
+ * @returns Constraint fuction or array of error messages.
  */
-exports.transformInputClause = (0, create_clause_transform_1.createJsonLogicClauseTransform)(function (condition) {
-    var result = (0, validate_input_condition_1.validateInputCondition)(condition);
+exports.transformInputClause = (0, create_json_logic_clause_transform_function_1.createJsonLogicClauseTransform)(function (condition) {
+    var result = (0, validate_input_condition_function_1.validateInputCondition)(condition);
     if (result !== true) {
         return result;
     }
-    return (0, transform_input_condition_1.transformInputCondition)(condition);
+    return (0, transform_input_condition_function_1.transformInputCondition)(condition);
 });
 
 
 /***/ }),
 
-/***/ "./src/input-condition/transform-input-condition.ts":
-/*!**********************************************************!*\
-  !*** ./src/input-condition/transform-input-condition.ts ***!
-  \**********************************************************/
+/***/ "./src/link-conditions/input-condition/transform-input-condition.function.ts":
+/*!***********************************************************************************!*\
+  !*** ./src/link-conditions/input-condition/transform-input-condition.function.ts ***!
+  \***********************************************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.transformInputCondition = void 0;
-var controller_constant_prefix_1 = __webpack_require__(/*! ./controller-constant-prefix */ "./src/input-condition/controller-constant-prefix.ts");
-var input_key_prefix_1 = __webpack_require__(/*! ./input-key-prefix */ "./src/input-condition/input-key-prefix.ts");
+var controller_constant_prefix_enum_1 = __webpack_require__(/*! ./controller-constant-prefix.enum */ "./src/link-conditions/input-condition/controller-constant-prefix.enum.ts");
+var input_key_prefix_enum_1 = __webpack_require__(/*! ./input-key-prefix.enum */ "./src/link-conditions/input-condition/input-key-prefix.enum.ts");
 /**
+ * Transform input condition.
  *
- * @param condition
- * @returns
+ * @param condition JSON logic input condition.
+ * @returns Transformed input condition as a JSON logic constraint.
  */
 function transformInputCondition(condition) {
     var inputKey = condition[0];
     var desiredValue = condition[1];
     var inputKeyParts = inputKey.split('_');
-    var propPrefix = inputKeyParts[0] === input_key_prefix_1.InputKeyPrefix.Pc ? controller_constant_prefix_1.ControllerConstantPrefix.Pc : controller_constant_prefix_1.ControllerConstantPrefix.Op;
+    var propPrefix = inputKeyParts[0] === input_key_prefix_enum_1.InputKeyPrefix.Pc ? controller_constant_prefix_enum_1.ControllerConstantPrefix.Pc : controller_constant_prefix_enum_1.ControllerConstantPrefix.Op;
     var prop = "".concat(propPrefix).concat(inputKeyParts[1]);
-    if (inputKeyParts[0] === input_key_prefix_1.InputKeyPrefix.Pc) {
+    if (inputKeyParts[0] === input_key_prefix_enum_1.InputKeyPrefix.Pc) {
         return function (controllerId) {
             var pressed = !!Agtk.controllers.getKeyValue(controllerId, Agtk.constants.controllers[prop]);
             return desiredValue ? pressed : !pressed;
@@ -2098,20 +2397,21 @@ exports.transformInputCondition = transformInputCondition;
 
 /***/ }),
 
-/***/ "./src/input-condition/validate-input-condition.ts":
-/*!*********************************************************!*\
-  !*** ./src/input-condition/validate-input-condition.ts ***!
-  \*********************************************************/
+/***/ "./src/link-conditions/input-condition/validate-input-condition.function.ts":
+/*!**********************************************************************************!*\
+  !*** ./src/link-conditions/input-condition/validate-input-condition.function.ts ***!
+  \**********************************************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.validateInputCondition = void 0;
-var input_key_1 = __webpack_require__(/*! ./input-key */ "./src/input-condition/input-key.ts");
+var input_key_enum_1 = __webpack_require__(/*! ./input-key.enum */ "./src/link-conditions/input-condition/input-key.enum.ts");
 /**
+ * Validate input condition.
  *
- * @param condition
- * @returns
+ * @param condition JSON logic input condition.
+ * @returns True or error message.
  */
 function validateInputCondition(condition) {
     if (!Array.isArray(condition)) {
@@ -2123,7 +2423,7 @@ function validateInputCondition(condition) {
     if (typeof condition[0] !== 'string') {
         return 'Input condition condition must be of type array with first element of type string';
     }
-    if (typeof input_key_1.InputKey[condition[0]] !== 'string') {
+    if (typeof input_key_enum_1.InputKey[condition[0]] !== 'string') {
         return "Input condition condition must be of type array with valid first element: '".concat(condition[0], "' is invalid");
     }
     if (typeof condition[1] !== 'boolean') {
@@ -2136,72 +2436,78 @@ exports.validateInputCondition = validateInputCondition;
 
 /***/ }),
 
-/***/ "./src/link-conditions.ts":
-/*!********************************!*\
-  !*** ./src/link-conditions.ts ***!
-  \********************************/
+/***/ "./src/link-conditions/link-condition-id.enum.ts":
+/*!*******************************************************!*\
+  !*** ./src/link-conditions/link-condition-id.enum.ts ***!
+  \*******************************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+
+/**
+ * Exports link condition ID enumerations.
+ *
+ * @module link-conditions/link-condition-id.enum
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.LinkConditionId = void 0;
+/**
+ * Link condition ID enumeration.
+ */
+var LinkConditionId;
+(function (LinkConditionId) {
+    /**
+     * Input condition.
+     */
+    LinkConditionId[LinkConditionId["InputCondition"] = 1] = "InputCondition";
+})(LinkConditionId = exports.LinkConditionId || (exports.LinkConditionId = {}));
+
+
+/***/ }),
+
+/***/ "./src/link-conditions/link-condition-index-map.const.ts":
+/*!***************************************************************!*\
+  !*** ./src/link-conditions/link-condition-index-map.const.ts ***!
+  \***************************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
-var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.linkConditions = exports.inputConditionParameterDefaults = exports.InputConditionFallbackParameterId = exports.InputConditionParameterId = exports.linkConditionIdToIndexMap = exports.LinkConditionId = void 0;
-var plugin_ui_parameter_type_1 = __webpack_require__(/*! @agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-parameter-type */ "./node_modules/@agogpixel/pgmmv-ts/api/agtk/plugin/plugin-ui-parameter-type.js");
-var LinkConditionId;
-(function (LinkConditionId) {
-    LinkConditionId[LinkConditionId["InputCondition"] = 8177408] = "InputCondition";
-})(LinkConditionId = exports.LinkConditionId || (exports.LinkConditionId = {}));
-exports.linkConditionIdToIndexMap = (_a = {},
-    _a[LinkConditionId.InputCondition] = 0,
-    _a);
-var InputConditionParameterId;
-(function (InputConditionParameterId) {
-    InputConditionParameterId[InputConditionParameterId["Json"] = 8177409] = "Json";
-    InputConditionParameterId[InputConditionParameterId["Fallback"] = 8177410] = "Fallback";
-    InputConditionParameterId[InputConditionParameterId["Identifier"] = 8177411] = "Identifier";
-})(InputConditionParameterId = exports.InputConditionParameterId || (exports.InputConditionParameterId = {}));
-var InputConditionFallbackParameterId;
-(function (InputConditionFallbackParameterId) {
-    InputConditionFallbackParameterId[InputConditionFallbackParameterId["Default"] = 0] = "Default";
-    InputConditionFallbackParameterId[InputConditionFallbackParameterId["AlwaysFalse"] = 1] = "AlwaysFalse";
-})(InputConditionFallbackParameterId = exports.InputConditionFallbackParameterId || (exports.InputConditionFallbackParameterId = {}));
-exports.inputConditionParameterDefaults = {
-    json: ['Op_A', true],
-    fallback: InputConditionFallbackParameterId.Default,
-    identifier: 'Unique To Object'
-};
+exports.linkConditionIndexMap = void 0;
+var link_conditions_config_1 = __webpack_require__(/*! ./link-conditions.config */ "./src/link-conditions/link-conditions.config.ts");
+/**
+ * Map a link condition ID to its corresponding index within the
+ * {@link AgtkPluginLinkCondition} parameter data provided by this plugin.
+ *
+ * Populated at runtime.
+ */
+exports.linkConditionIndexMap = {};
+for (var i = 0; i < link_conditions_config_1.linkConditions.length; ++i) {
+    exports.linkConditionIndexMap[link_conditions_config_1.linkConditions[i].id] = i;
+}
+
+
+/***/ }),
+
+/***/ "./src/link-conditions/link-conditions.config.ts":
+/*!*******************************************************!*\
+  !*** ./src/link-conditions/link-conditions.config.ts ***!
+  \*******************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.linkConditions = void 0;
+var input_condition_1 = __webpack_require__(/*! ./input-condition */ "./src/link-conditions/input-condition/index.ts");
+var link_condition_id_enum_1 = __webpack_require__(/*! ./link-condition-id.enum */ "./src/link-conditions/link-condition-id.enum.ts");
+/**
+ * Link condition configurations.
+ */
 exports.linkConditions = [
     {
-        id: LinkConditionId.InputCondition,
-        name: 'loca(LINK_CONDITION_0_NAME)',
-        description: 'loca(LINK_CONDITION_0_DESCRIPTION)',
-        parameter: [
-            {
-                id: InputConditionParameterId.Identifier,
-                name: 'loca(LINK_CONDITION_0_PARAMETER_2_NAME)',
-                type: plugin_ui_parameter_type_1.AgtkPluginUiParameterType.String,
-                defaultValue: exports.inputConditionParameterDefaults.identifier
-            },
-            {
-                id: InputConditionParameterId.Json,
-                name: 'loca(LINK_CONDITION_0_PARAMETER_0_NAME)',
-                type: plugin_ui_parameter_type_1.AgtkPluginUiParameterType.Json,
-                defaultValue: exports.inputConditionParameterDefaults.json
-            },
-            {
-                id: InputConditionParameterId.Fallback,
-                name: 'loca(LINK_CONDITION_0_PARAMETER_1_NAME)',
-                type: plugin_ui_parameter_type_1.AgtkPluginUiParameterType.CustomId,
-                customParam: [
-                    {
-                        id: InputConditionFallbackParameterId.Default,
-                        name: 'loca(LINK_CONDITION_0_PARAMETER_1_PARAM_0_NAME)'
-                    },
-                    { id: InputConditionFallbackParameterId.AlwaysFalse, name: 'loca(LINK_CONDITION_0_PARAMETER_1_PARAM_1_NAME)' }
-                ],
-                defaultValue: exports.inputConditionParameterDefaults.fallback
-            }
-        ]
+        id: link_condition_id_enum_1.LinkConditionId.InputCondition,
+        name: 'loca(LINK_CONDITION_INPUT_CONDITION_NAME)',
+        description: 'loca(LINK_CONDITION_INPUT_CONDITION_DESCRIPTION)',
+        parameter: input_condition_1.inputConditionParameters
     }
 ];
 
@@ -2262,7 +2568,7 @@ module.exports = "# Gestalt Input Plugin\n\nAn alternative way to define input l
   \*********************************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"PLUGIN_NAME":"Gestalt Input","PLUGIN_DESCRIPTION":"Input condition with JSON; Resolves to an operable controller*.","PLUGIN_AUTHOR":"kidthales <kidthales@agogpixel.com>","PLUGIN_HELP":"See help.md","LINK_CONDITION_0_NAME":"Gestalt Input Condition","LINK_CONDITION_0_DESCRIPTION":"Input condition with JSON; Resolves to an operable controller*.","LINK_CONDITION_0_PARAMETER_0_NAME":"Input Condition JSON","LINK_CONDITION_0_PARAMETER_1_NAME":"Controller Fallback","LINK_CONDITION_0_PARAMETER_1_PARAM_0_NAME":"ANY CONTROLLER","LINK_CONDITION_0_PARAMETER_1_PARAM_1_NAME":"ALWAYS FALSE","LINK_CONDITION_0_PARAMETER_2_NAME":"Input Condition Identifier"}');
+module.exports = JSON.parse('{"PLUGIN_NAME":"Gestalt Input","PLUGIN_DESCRIPTION":"Input condition with JSON; Resolves to an operable controller*.","PLUGIN_AUTHOR":"kidthales <kidthales@agogpixel.com>","PLUGIN_HELP":"See help.md","LINK_CONDITION_INPUT_CONDITION_NAME":"Gestalt Input Condition","LINK_CONDITION_INPUT_CONDITION_DESCRIPTION":"Input condition with JSON; Resolves to an operable controller*.","LINK_CONDITION_INPUT_CONDITION_PARAMETER_JSON_NAME":"Input Condition JSON","LINK_CONDITION_INPUT_CONDITION_PARAMETER_FALLBACK_NAME":"Controller Fallback","LINK_CONDITION_INPUT_CONDITION_PARAMETER_FALLBACK_PARAM_DEFAULT_NAME":"ANY CONTROLLER","LINK_CONDITION_INPUT_CONDITION_PARAMETER_FALLBACK_PARAM_ALWAYS_FALSE_NAME":"ALWAYS FALSE","LINK_CONDITION_INPUT_CONDITION_PARAMETER_IDENTIFIER_NAME":"Input Condition Identifier","LINK_CONDITION_INPUT_CONDITION_PARAMETER_IDENTIFIER_DEFAULT_VALUE":"Unique To Object"}');
 
 /***/ })
 
@@ -2270,7 +2576,7 @@ module.exports = JSON.parse('{"PLUGIN_NAME":"Gestalt Input","PLUGIN_DESCRIPTION"
 /************************************************************************/
 /******/ 	// The module cache
 /******/ 	var __webpack_module_cache__ = {};
-/******/ 	
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
@@ -2284,14 +2590,14 @@ module.exports = JSON.parse('{"PLUGIN_NAME":"Gestalt Input","PLUGIN_DESCRIPTION"
 /******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
-/******/ 	
+/******/
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/ 	
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/ 	
+/******/
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
@@ -2302,8 +2608,8 @@ var exports = __webpack_exports__;
   \****************************/
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-var create_gestalt_input_plugin_1 = __webpack_require__(/*! ./create-gestalt-input-plugin */ "./src/create-gestalt-input-plugin.ts");
-var plugin = (0, create_gestalt_input_plugin_1.createGestaltInputPlugin)();
+var create_gestalt_input_plugin_function_1 = __webpack_require__(/*! ./create-gestalt-input-plugin.function */ "./src/create-gestalt-input-plugin.function.ts");
+var plugin = (0, create_gestalt_input_plugin_function_1.createGestaltInputPlugin)();
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 return plugin;

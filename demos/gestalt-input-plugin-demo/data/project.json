@@ -5,6 +5,7 @@
 	"gameType": 1,
 	"playerCount": 2,
 	"mode30Fps": false,
+	"fix60FpsMode": false,
 	"tileWidth": 24,
 	"tileHeight": 24,
 	"screenWidth": 640,
@@ -20,7 +21,8 @@
 	"nxSoftResetKeyConfig": 0,
 	"nxReturnToLauncherKeyConfig": 0,
 	"nxMenuBarVisibleKeyConfig": 0,
-	"nxPlayerVersion": "1.0.5",
+	"nxSupportForSingleJoyCon": true,
+	"nxPlayerVersion": "1.0.6",
 	"gameVersion": "1.0",
 	"magnifyWindow":false,
 	"windowMagnification":2,
@@ -675,7 +677,7 @@
 	"switchList": [
 				{
 			"id": 1,
-			"name": "Reset",
+			"name": "Initialize Resources",
 			"initialValue": false,
 			"toBeSaved": true,
 			"memo": "",
@@ -683,7 +685,7 @@
 		},
 				{
 			"id": 2,
-			"name": "Reset",
+			"name": "Reset Game",
 			"initialValue": false,
 			"toBeSaved": true,
 			"memo": "",
@@ -1328,8 +1330,8 @@
 }
 } ],
 	"memo": "",
-	"x": -548,
-	"y": -169,
+	"x": -552,
+	"y": -168,
 	"width": 288,
 	"height": 64,
 	"shortcutList": []
@@ -2541,10 +2543,10 @@
 	"g": 255,
 	"b": 0,
 	"actionIdList": [ 5, 6, 7, 8, 9, 10, 11, 12 ],
-	"x": -552,
-	"y": -216,
-	"width": 296,
-	"height": 619,
+	"x": -556,
+	"y": -215,
+	"width": 300,
+	"height": 618,
 	"collapsed": false
 },
 			"aroundCharacterViewSettingFlag": false,
@@ -5878,8 +5880,8 @@
 }
 } ],
 	"memo": "",
-	"x": -524,
-	"y": -121,
+	"x": -528,
+	"y": -120,
 	"width": 264,
 	"height": 64,
 	"shortcutList": []
@@ -5999,8 +6001,8 @@
 }
 } ],
 	"memo": "",
-	"x": -524,
-	"y": -25,
+	"x": -528,
+	"y": -24,
 	"width": 264,
 	"height": 64,
 	"shortcutList": []
@@ -6035,8 +6037,8 @@
 	"g": 255,
 	"b": 0,
 	"actionIdList": [ 5, 6 ],
-	"x": -528,
-	"y": -168,
+	"x": -532,
+	"y": -167,
 	"width": 272,
 	"height": 211,
 	"collapsed": false
@@ -6918,8 +6920,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_LeftStickDown\\\", true],\\n    [\\\"Op_LeftStickUp\\\", false],\\n    [\\\"Op_LeftStickRight\\\", false],\\n    [\\\"Op_LeftStickLeft\\\", false]\\n  ]\\n}\"\n    },\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Enter Down State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_LeftStickDown\\\", true],\\n    [\\\"Op_LeftStickUp\\\", false],\\n    [\\\"Op_LeftStickRight\\\", false],\\n    [\\\"Op_LeftStickLeft\\\", false]\\n  ]\\n}\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 3,\n        \"value\": \"Enter Down State\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"AND\": [\n    [\"Op_LeftStickDown\", true],\n    [\"Op_LeftStickUp\", false],\n    [\"Op_LeftStickRight\", false],\n    [\"Op_LeftStickLeft\", false]\n  ]\n}",
@@ -7004,8 +7006,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    [\\\"Op_LeftStickUp\\\", true],\\n    [\\\"Op_LeftStickRight\\\", true],\\n    [\\\"Op_LeftStickLeft\\\", true]\\n  ]\\n}\\n\"\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Exit Down State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Exit Down State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    [\\\"Op_LeftStickUp\\\", true],\\n    [\\\"Op_LeftStickRight\\\", true],\\n    [\\\"Op_LeftStickLeft\\\", true]\\n  ]\\n}\\n\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"OR\": [\n    [\"Op_LeftStickUp\", true],\n    [\"Op_LeftStickRight\", true],\n    [\"Op_LeftStickLeft\", true]\n  ]\n}\n",
@@ -7037,8 +7039,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_LeftStickDown\\\", true],\\n    [\\\"Op_LeftStickUp\\\", false],\\n    [\\\"Op_LeftStickRight\\\", true],\\n    [\\\"Op_LeftStickLeft\\\", false]\\n  ]\\n}\"\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Enter Down Right State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Enter Down Right State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_LeftStickDown\\\", true],\\n    [\\\"Op_LeftStickUp\\\", false],\\n    [\\\"Op_LeftStickRight\\\", true],\\n    [\\\"Op_LeftStickLeft\\\", false]\\n  ]\\n}\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"AND\": [\n    [\"Op_LeftStickDown\", true],\n    [\"Op_LeftStickUp\", false],\n    [\"Op_LeftStickRight\", true],\n    [\"Op_LeftStickLeft\", false]\n  ]\n}",
@@ -7123,8 +7125,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_LeftStickDown\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_LeftStickRight\\\", true],\\n            [\\\"Op_LeftStickUp\\\", true],\\n            [\\\"Op_LeftStickLeft\\\", true]\\n          ]\\n        }\\n      ]\\n    },\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_LeftStickRight\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_LeftStickDown\\\", true],\\n            [\\\"Op_LeftStickUp\\\", true],\\n            [\\\"Op_LeftStickLeft\\\", true]\\n          ]\\n        }\\n      ]\\n    }\\n  ]\\n}\"\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Exit Down Right State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Exit Down Right State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_LeftStickDown\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_LeftStickRight\\\", true],\\n            [\\\"Op_LeftStickUp\\\", true],\\n            [\\\"Op_LeftStickLeft\\\", true]\\n          ]\\n        }\\n      ]\\n    },\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_LeftStickRight\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_LeftStickDown\\\", true],\\n            [\\\"Op_LeftStickUp\\\", true],\\n            [\\\"Op_LeftStickLeft\\\", true]\\n          ]\\n        }\\n      ]\\n    }\\n  ]\\n}\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"OR\": [\n    {\n      \"AND\": [\n        [\"Op_LeftStickDown\", false],\n        {\n          \"OR\": [\n            [\"Op_LeftStickRight\", true],\n            [\"Op_LeftStickUp\", true],\n            [\"Op_LeftStickLeft\", true]\n          ]\n        }\n      ]\n    },\n    {\n      \"AND\": [\n        [\"Op_LeftStickRight\", false],\n        {\n          \"OR\": [\n            [\"Op_LeftStickDown\", true],\n            [\"Op_LeftStickUp\", true],\n            [\"Op_LeftStickLeft\", true]\n          ]\n        }\n      ]\n    }\n  ]\n}",
@@ -7156,8 +7158,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_LeftStickDown\\\", false],\\n    [\\\"Op_LeftStickUp\\\", false],\\n    [\\\"Op_LeftStickRight\\\", true],\\n    [\\\"Op_LeftStickLeft\\\", false]\\n  ]\\n}\"\n    },\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Enter Right State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Enter Right State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_LeftStickDown\\\", false],\\n    [\\\"Op_LeftStickUp\\\", false],\\n    [\\\"Op_LeftStickRight\\\", true],\\n    [\\\"Op_LeftStickLeft\\\", false]\\n  ]\\n}\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"AND\": [\n    [\"Op_LeftStickDown\", false],\n    [\"Op_LeftStickUp\", false],\n    [\"Op_LeftStickRight\", true],\n    [\"Op_LeftStickLeft\", false]\n  ]\n}",
@@ -7242,8 +7244,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    [\\\"Op_LeftStickUp\\\", true],\\n    [\\\"Op_LeftStickDown\\\", true],\\n    [\\\"Op_LeftStickLeft\\\", true]\\n  ]\\n}\\n\"\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Exit Right State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Exit Right State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    [\\\"Op_LeftStickUp\\\", true],\\n    [\\\"Op_LeftStickDown\\\", true],\\n    [\\\"Op_LeftStickLeft\\\", true]\\n  ]\\n}\\n\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"OR\": [\n    [\"Op_LeftStickUp\", true],\n    [\"Op_LeftStickDown\", true],\n    [\"Op_LeftStickLeft\", true]\n  ]\n}\n",
@@ -7275,8 +7277,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_LeftStickDown\\\", false],\\n    [\\\"Op_LeftStickUp\\\", true],\\n    [\\\"Op_LeftStickRight\\\", true],\\n    [\\\"Op_LeftStickLeft\\\", false]\\n  ]\\n}\"\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Enter Up Right State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Enter Up Right State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_LeftStickDown\\\", false],\\n    [\\\"Op_LeftStickUp\\\", true],\\n    [\\\"Op_LeftStickRight\\\", true],\\n    [\\\"Op_LeftStickLeft\\\", false]\\n  ]\\n}\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"AND\": [\n    [\"Op_LeftStickDown\", false],\n    [\"Op_LeftStickUp\", true],\n    [\"Op_LeftStickRight\", true],\n    [\"Op_LeftStickLeft\", false]\n  ]\n}",
@@ -7335,8 +7337,8 @@
 }
 } ],
 	"memo": "",
-	"x": 200,
-	"y": 406,
+	"x": 192,
+	"y": 408,
 	"width": 336,
 	"height": 64,
 	"shortcutList": []
@@ -7361,8 +7363,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_LeftStickUp\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_LeftStickRight\\\", true],\\n            [\\\"Op_LeftStickDown\\\", true],\\n            [\\\"Op_LeftStickLeft\\\", true]\\n          ]\\n        }\\n      ]\\n    },\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_LeftStickRight\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_LeftStickDown\\\", true],\\n            [\\\"Op_LeftStickUp\\\", true],\\n            [\\\"Op_LeftStickLeft\\\", true]\\n          ]\\n        }\\n      ]\\n    }\\n  ]\\n}\"\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Exit Up Right State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Exit Up Right State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_LeftStickUp\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_LeftStickRight\\\", true],\\n            [\\\"Op_LeftStickDown\\\", true],\\n            [\\\"Op_LeftStickLeft\\\", true]\\n          ]\\n        }\\n      ]\\n    },\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_LeftStickRight\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_LeftStickDown\\\", true],\\n            [\\\"Op_LeftStickUp\\\", true],\\n            [\\\"Op_LeftStickLeft\\\", true]\\n          ]\\n        }\\n      ]\\n    }\\n  ]\\n}\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"OR\": [\n    {\n      \"AND\": [\n        [\"Op_LeftStickUp\", false],\n        {\n          \"OR\": [\n            [\"Op_LeftStickRight\", true],\n            [\"Op_LeftStickDown\", true],\n            [\"Op_LeftStickLeft\", true]\n          ]\n        }\n      ]\n    },\n    {\n      \"AND\": [\n        [\"Op_LeftStickRight\", false],\n        {\n          \"OR\": [\n            [\"Op_LeftStickDown\", true],\n            [\"Op_LeftStickUp\", true],\n            [\"Op_LeftStickLeft\", true]\n          ]\n        }\n      ]\n    }\n  ]\n}",
@@ -7394,8 +7396,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_LeftStickDown\\\", false],\\n    [\\\"Op_LeftStickUp\\\", true],\\n    [\\\"Op_LeftStickRight\\\", false],\\n    [\\\"Op_LeftStickLeft\\\", false]\\n  ]\\n}\"\n    },\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Enter Up State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Enter Up State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_LeftStickDown\\\", false],\\n    [\\\"Op_LeftStickUp\\\", true],\\n    [\\\"Op_LeftStickRight\\\", false],\\n    [\\\"Op_LeftStickLeft\\\", false]\\n  ]\\n}\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"AND\": [\n    [\"Op_LeftStickDown\", false],\n    [\"Op_LeftStickUp\", true],\n    [\"Op_LeftStickRight\", false],\n    [\"Op_LeftStickLeft\", false]\n  ]\n}",
@@ -7480,8 +7482,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    [\\\"Op_LeftStickRight\\\", true],\\n    [\\\"Op_LeftStickDown\\\", true],\\n    [\\\"Op_LeftStickLeft\\\", true]\\n  ]\\n}\\n\"\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Exit Up State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Exit Up State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    [\\\"Op_LeftStickRight\\\", true],\\n    [\\\"Op_LeftStickDown\\\", true],\\n    [\\\"Op_LeftStickLeft\\\", true]\\n  ]\\n}\\n\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"OR\": [\n    [\"Op_LeftStickRight\", true],\n    [\"Op_LeftStickDown\", true],\n    [\"Op_LeftStickLeft\", true]\n  ]\n}\n",
@@ -7513,8 +7515,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_LeftStickDown\\\", false],\\n    [\\\"Op_LeftStickUp\\\", true],\\n    [\\\"Op_LeftStickRight\\\", false],\\n    [\\\"Op_LeftStickLeft\\\", true]\\n  ]\\n}\"\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Enter Up Left State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Enter Up Left State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_LeftStickDown\\\", false],\\n    [\\\"Op_LeftStickUp\\\", true],\\n    [\\\"Op_LeftStickRight\\\", false],\\n    [\\\"Op_LeftStickLeft\\\", true]\\n  ]\\n}\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"AND\": [\n    [\"Op_LeftStickDown\", false],\n    [\"Op_LeftStickUp\", true],\n    [\"Op_LeftStickRight\", false],\n    [\"Op_LeftStickLeft\", true]\n  ]\n}",
@@ -7599,8 +7601,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_LeftStickUp\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_LeftStickRight\\\", true],\\n            [\\\"Op_LeftStickDown\\\", true],\\n            [\\\"Op_LeftStickLeft\\\", true]\\n          ]\\n        }\\n      ]\\n    },\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_LeftStickLeft\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_LeftStickDown\\\", true],\\n            [\\\"Op_LeftStickUp\\\", true],\\n            [\\\"Op_LeftStickRight\\\", true]\\n          ]\\n        }\\n      ]\\n    }\\n  ]\\n}\"\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Exit Up Left State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Exit Up Left State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_LeftStickUp\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_LeftStickRight\\\", true],\\n            [\\\"Op_LeftStickDown\\\", true],\\n            [\\\"Op_LeftStickLeft\\\", true]\\n          ]\\n        }\\n      ]\\n    },\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_LeftStickLeft\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_LeftStickDown\\\", true],\\n            [\\\"Op_LeftStickUp\\\", true],\\n            [\\\"Op_LeftStickRight\\\", true]\\n          ]\\n        }\\n      ]\\n    }\\n  ]\\n}\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"OR\": [\n    {\n      \"AND\": [\n        [\"Op_LeftStickUp\", false],\n        {\n          \"OR\": [\n            [\"Op_LeftStickRight\", true],\n            [\"Op_LeftStickDown\", true],\n            [\"Op_LeftStickLeft\", true]\n          ]\n        }\n      ]\n    },\n    {\n      \"AND\": [\n        [\"Op_LeftStickLeft\", false],\n        {\n          \"OR\": [\n            [\"Op_LeftStickDown\", true],\n            [\"Op_LeftStickUp\", true],\n            [\"Op_LeftStickRight\", true]\n          ]\n        }\n      ]\n    }\n  ]\n}",
@@ -7632,8 +7634,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_LeftStickDown\\\", false],\\n    [\\\"Op_LeftStickUp\\\", false],\\n    [\\\"Op_LeftStickRight\\\", false],\\n    [\\\"Op_LeftStickLeft\\\", true]\\n  ]\\n}\"\n    },\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Enter Left State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Enter Left State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_LeftStickDown\\\", false],\\n    [\\\"Op_LeftStickUp\\\", false],\\n    [\\\"Op_LeftStickRight\\\", false],\\n    [\\\"Op_LeftStickLeft\\\", true]\\n  ]\\n}\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"AND\": [\n    [\"Op_LeftStickDown\", false],\n    [\"Op_LeftStickUp\", false],\n    [\"Op_LeftStickRight\", false],\n    [\"Op_LeftStickLeft\", true]\n  ]\n}",
@@ -7718,8 +7720,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    [\\\"Op_LeftStickRight\\\", true],\\n    [\\\"Op_LeftStickDown\\\", true],\\n    [\\\"Op_LeftStickUp\\\", true]\\n  ]\\n}\\n\"\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Exit Left State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Exit Left State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    [\\\"Op_LeftStickRight\\\", true],\\n    [\\\"Op_LeftStickDown\\\", true],\\n    [\\\"Op_LeftStickUp\\\", true]\\n  ]\\n}\\n\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"OR\": [\n    [\"Op_LeftStickRight\", true],\n    [\"Op_LeftStickDown\", true],\n    [\"Op_LeftStickUp\", true]\n  ]\n}\n",
@@ -7751,8 +7753,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_LeftStickDown\\\", true],\\n    [\\\"Op_LeftStickUp\\\", false],\\n    [\\\"Op_LeftStickRight\\\", false],\\n    [\\\"Op_LeftStickLeft\\\", true]\\n  ]\\n}\"\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Enter Down Left State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Enter Down Left State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_LeftStickDown\\\", true],\\n    [\\\"Op_LeftStickUp\\\", false],\\n    [\\\"Op_LeftStickRight\\\", false],\\n    [\\\"Op_LeftStickLeft\\\", true]\\n  ]\\n}\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"AND\": [\n    [\"Op_LeftStickDown\", true],\n    [\"Op_LeftStickUp\", false],\n    [\"Op_LeftStickRight\", false],\n    [\"Op_LeftStickLeft\", true]\n  ]\n}",
@@ -7837,8 +7839,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_LeftStickDown\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_LeftStickRight\\\", true],\\n            [\\\"Op_LeftStickUp\\\", true],\\n            [\\\"Op_LeftStickLeft\\\", true]\\n          ]\\n        }\\n      ]\\n    },\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_LeftStickLeft\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_LeftStickDown\\\", true],\\n            [\\\"Op_LeftStickUp\\\", true],\\n            [\\\"Op_LeftStickRight\\\", true]\\n          ]\\n        }\\n      ]\\n    }\\n  ]\\n}\"\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Exit Down Left State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Exit Down Left State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_LeftStickDown\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_LeftStickRight\\\", true],\\n            [\\\"Op_LeftStickUp\\\", true],\\n            [\\\"Op_LeftStickLeft\\\", true]\\n          ]\\n        }\\n      ]\\n    },\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_LeftStickLeft\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_LeftStickDown\\\", true],\\n            [\\\"Op_LeftStickUp\\\", true],\\n            [\\\"Op_LeftStickRight\\\", true]\\n          ]\\n        }\\n      ]\\n    }\\n  ]\\n}\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"OR\": [\n    {\n      \"AND\": [\n        [\"Op_LeftStickDown\", false],\n        {\n          \"OR\": [\n            [\"Op_LeftStickRight\", true],\n            [\"Op_LeftStickUp\", true],\n            [\"Op_LeftStickLeft\", true]\n          ]\n        }\n      ]\n    },\n    {\n      \"AND\": [\n        [\"Op_LeftStickLeft\", false],\n        {\n          \"OR\": [\n            [\"Op_LeftStickDown\", true],\n            [\"Op_LeftStickUp\", true],\n            [\"Op_LeftStickRight\", true]\n          ]\n        }\n      ]\n    }\n  ]\n}",
@@ -8716,8 +8718,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_RightStickDown\\\", true],\\n    [\\\"Op_RightStickUp\\\", false],\\n    [\\\"Op_RightStickRight\\\", false],\\n    [\\\"Op_RightStickLeft\\\", false]\\n  ]\\n}\"\n    },\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Enter Down State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Enter Down State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_RightStickDown\\\", true],\\n    [\\\"Op_RightStickUp\\\", false],\\n    [\\\"Op_RightStickRight\\\", false],\\n    [\\\"Op_RightStickLeft\\\", false]\\n  ]\\n}\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"AND\": [\n    [\"Op_RightStickDown\", true],\n    [\"Op_RightStickUp\", false],\n    [\"Op_RightStickRight\", false],\n    [\"Op_RightStickLeft\", false]\n  ]\n}",
@@ -8802,8 +8804,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    [\\\"Op_RightStickUp\\\", true],\\n    [\\\"Op_RightStickRight\\\", true],\\n    [\\\"Op_RightStickLeft\\\", true]\\n  ]\\n}\\n\"\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Exit Down State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Exit Down State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    [\\\"Op_RightStickUp\\\", true],\\n    [\\\"Op_RightStickRight\\\", true],\\n    [\\\"Op_RightStickLeft\\\", true]\\n  ]\\n}\\n\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"OR\": [\n    [\"Op_RightStickUp\", true],\n    [\"Op_RightStickRight\", true],\n    [\"Op_RightStickLeft\", true]\n  ]\n}\n",
@@ -8835,8 +8837,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_RightStickDown\\\", true],\\n    [\\\"Op_RightStickUp\\\", false],\\n    [\\\"Op_RightStickRight\\\", true],\\n    [\\\"Op_RightStickLeft\\\", false]\\n  ]\\n}\"\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Enter Down Right State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Enter Down Right State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_RightStickDown\\\", true],\\n    [\\\"Op_RightStickUp\\\", false],\\n    [\\\"Op_RightStickRight\\\", true],\\n    [\\\"Op_RightStickLeft\\\", false]\\n  ]\\n}\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"AND\": [\n    [\"Op_RightStickDown\", true],\n    [\"Op_RightStickUp\", false],\n    [\"Op_RightStickRight\", true],\n    [\"Op_RightStickLeft\", false]\n  ]\n}",
@@ -8921,8 +8923,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_RightStickDown\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_RightStickRight\\\", true],\\n            [\\\"Op_RightStickUp\\\", true],\\n            [\\\"Op_RightStickLeft\\\", true]\\n          ]\\n        }\\n      ]\\n    },\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_RightStickRight\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_RightStickDown\\\", true],\\n            [\\\"Op_RightStickUp\\\", true],\\n            [\\\"Op_RightStickLeft\\\", true]\\n          ]\\n        }\\n      ]\\n    }\\n  ]\\n}\"\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Exit Down Right State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Exit Down Right State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_RightStickDown\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_RightStickRight\\\", true],\\n            [\\\"Op_RightStickUp\\\", true],\\n            [\\\"Op_RightStickLeft\\\", true]\\n          ]\\n        }\\n      ]\\n    },\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_RightStickRight\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_RightStickDown\\\", true],\\n            [\\\"Op_RightStickUp\\\", true],\\n            [\\\"Op_RightStickLeft\\\", true]\\n          ]\\n        }\\n      ]\\n    }\\n  ]\\n}\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"OR\": [\n    {\n      \"AND\": [\n        [\"Op_RightStickDown\", false],\n        {\n          \"OR\": [\n            [\"Op_RightStickRight\", true],\n            [\"Op_RightStickUp\", true],\n            [\"Op_RightStickLeft\", true]\n          ]\n        }\n      ]\n    },\n    {\n      \"AND\": [\n        [\"Op_RightStickRight\", false],\n        {\n          \"OR\": [\n            [\"Op_RightStickDown\", true],\n            [\"Op_RightStickUp\", true],\n            [\"Op_RightStickLeft\", true]\n          ]\n        }\n      ]\n    }\n  ]\n}",
@@ -8954,8 +8956,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_RightStickDown\\\", false],\\n    [\\\"Op_RightStickUp\\\", false],\\n    [\\\"Op_RightStickRight\\\", true],\\n    [\\\"Op_RightStickLeft\\\", false]\\n  ]\\n}\"\n    },\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Enter Right State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Enter Right State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_RightStickDown\\\", false],\\n    [\\\"Op_RightStickUp\\\", false],\\n    [\\\"Op_RightStickRight\\\", true],\\n    [\\\"Op_RightStickLeft\\\", false]\\n  ]\\n}\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"AND\": [\n    [\"Op_RightStickDown\", false],\n    [\"Op_RightStickUp\", false],\n    [\"Op_RightStickRight\", true],\n    [\"Op_RightStickLeft\", false]\n  ]\n}",
@@ -9040,8 +9042,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    [\\\"Op_RightStickUp\\\", true],\\n    [\\\"Op_RightStickDown\\\", true],\\n    [\\\"Op_RightStickLeft\\\", true]\\n  ]\\n}\\n\"\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Exit Right State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Exit Right\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    [\\\"Op_RightStickUp\\\", true],\\n    [\\\"Op_RightStickDown\\\", true],\\n    [\\\"Op_RightStickLeft\\\", true]\\n  ]\\n}\\n\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"OR\": [\n    [\"Op_RightStickUp\", true],\n    [\"Op_RightStickDown\", true],\n    [\"Op_RightStickLeft\", true]\n  ]\n}\n",
@@ -9073,8 +9075,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_RightStickDown\\\", false],\\n    [\\\"Op_RightStickUp\\\", true],\\n    [\\\"Op_RightStickRight\\\", true],\\n    [\\\"Op_RightStickLeft\\\", false]\\n  ]\\n}\"\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Enter Up Right State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Enter Up Right State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_RightStickDown\\\", false],\\n    [\\\"Op_RightStickUp\\\", true],\\n    [\\\"Op_RightStickRight\\\", true],\\n    [\\\"Op_RightStickLeft\\\", false]\\n  ]\\n}\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"AND\": [\n    [\"Op_RightStickDown\", false],\n    [\"Op_RightStickUp\", true],\n    [\"Op_RightStickRight\", true],\n    [\"Op_RightStickLeft\", false]\n  ]\n}",
@@ -9159,8 +9161,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_RightStickUp\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_RightStickRight\\\", true],\\n            [\\\"Op_RightStickDown\\\", true],\\n            [\\\"Op_RightStickLeft\\\", true]\\n          ]\\n        }\\n      ]\\n    },\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_RightStickRight\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_RightStickDown\\\", true],\\n            [\\\"Op_RightStickUp\\\", true],\\n            [\\\"Op_RightStickLeft\\\", true]\\n          ]\\n        }\\n      ]\\n    }\\n  ]\\n}\"\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Exit Up Right State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Exit Up Right State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_RightStickUp\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_RightStickRight\\\", true],\\n            [\\\"Op_RightStickDown\\\", true],\\n            [\\\"Op_RightStickLeft\\\", true]\\n          ]\\n        }\\n      ]\\n    },\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_RightStickRight\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_RightStickDown\\\", true],\\n            [\\\"Op_RightStickUp\\\", true],\\n            [\\\"Op_RightStickLeft\\\", true]\\n          ]\\n        }\\n      ]\\n    }\\n  ]\\n}\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"OR\": [\n    {\n      \"AND\": [\n        [\"Op_RightStickUp\", false],\n        {\n          \"OR\": [\n            [\"Op_RightStickRight\", true],\n            [\"Op_RightStickDown\", true],\n            [\"Op_RightStickLeft\", true]\n          ]\n        }\n      ]\n    },\n    {\n      \"AND\": [\n        [\"Op_RightStickRight\", false],\n        {\n          \"OR\": [\n            [\"Op_RightStickDown\", true],\n            [\"Op_RightStickUp\", true],\n            [\"Op_RightStickLeft\", true]\n          ]\n        }\n      ]\n    }\n  ]\n}",
@@ -9192,8 +9194,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_RightStickDown\\\", false],\\n    [\\\"Op_RightStickUp\\\", true],\\n    [\\\"Op_RightStickRight\\\", false],\\n    [\\\"Op_RightStickLeft\\\", false]\\n  ]\\n}\"\n    },\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Enter Up State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Enter Up State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_RightStickDown\\\", false],\\n    [\\\"Op_RightStickUp\\\", true],\\n    [\\\"Op_RightStickRight\\\", false],\\n    [\\\"Op_RightStickLeft\\\", false]\\n  ]\\n}\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"AND\": [\n    [\"Op_RightStickDown\", false],\n    [\"Op_RightStickUp\", true],\n    [\"Op_RightStickRight\", false],\n    [\"Op_RightStickLeft\", false]\n  ]\n}",
@@ -9252,8 +9254,8 @@
 }
 } ],
 	"memo": "",
-	"x": -164,
-	"y": 383,
+	"x": -168,
+	"y": 384,
 	"width": 336,
 	"height": 72,
 	"shortcutList": []
@@ -9278,8 +9280,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    [\\\"Op_RightStickRight\\\", true],\\n    [\\\"Op_RightStickDown\\\", true],\\n    [\\\"Op_RightStickLeft\\\", true]\\n  ]\\n}\\n\"\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Exit Up State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Exit Up State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    [\\\"Op_RightStickRight\\\", true],\\n    [\\\"Op_RightStickDown\\\", true],\\n    [\\\"Op_RightStickLeft\\\", true]\\n  ]\\n}\\n\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"OR\": [\n    [\"Op_RightStickRight\", true],\n    [\"Op_RightStickDown\", true],\n    [\"Op_RightStickLeft\", true]\n  ]\n}\n",
@@ -9311,8 +9313,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_RightStickDown\\\", false],\\n    [\\\"Op_RightStickUp\\\", true],\\n    [\\\"Op_RightStickRight\\\", false],\\n    [\\\"Op_RightStickLeft\\\", true]\\n  ]\\n}\"\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Enter Up Left State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Enter Up Left State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_RightStickDown\\\", false],\\n    [\\\"Op_RightStickUp\\\", true],\\n    [\\\"Op_RightStickRight\\\", false],\\n    [\\\"Op_RightStickLeft\\\", true]\\n  ]\\n}\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"AND\": [\n    [\"Op_RightStickDown\", false],\n    [\"Op_RightStickUp\", true],\n    [\"Op_RightStickRight\", false],\n    [\"Op_RightStickLeft\", true]\n  ]\n}",
@@ -9397,8 +9399,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_RightStickUp\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_RightStickRight\\\", true],\\n            [\\\"Op_RightStickDown\\\", true],\\n            [\\\"Op_RightStickLeft\\\", true]\\n          ]\\n        }\\n      ]\\n    },\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_RightStickLeft\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_RightStickDown\\\", true],\\n            [\\\"Op_RightStickUp\\\", true],\\n            [\\\"Op_RightStickRight\\\", true]\\n          ]\\n        }\\n      ]\\n    }\\n  ]\\n}\"\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Exit Up Left State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Exit Up Left State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_RightStickUp\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_RightStickRight\\\", true],\\n            [\\\"Op_RightStickDown\\\", true],\\n            [\\\"Op_RightStickLeft\\\", true]\\n          ]\\n        }\\n      ]\\n    },\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_RightStickLeft\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_RightStickDown\\\", true],\\n            [\\\"Op_RightStickUp\\\", true],\\n            [\\\"Op_RightStickRight\\\", true]\\n          ]\\n        }\\n      ]\\n    }\\n  ]\\n}\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"OR\": [\n    {\n      \"AND\": [\n        [\"Op_RightStickUp\", false],\n        {\n          \"OR\": [\n            [\"Op_RightStickRight\", true],\n            [\"Op_RightStickDown\", true],\n            [\"Op_RightStickLeft\", true]\n          ]\n        }\n      ]\n    },\n    {\n      \"AND\": [\n        [\"Op_RightStickLeft\", false],\n        {\n          \"OR\": [\n            [\"Op_RightStickDown\", true],\n            [\"Op_RightStickUp\", true],\n            [\"Op_RightStickRight\", true]\n          ]\n        }\n      ]\n    }\n  ]\n}",
@@ -9430,8 +9432,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_RightStickDown\\\", false],\\n    [\\\"Op_RightStickUp\\\", false],\\n    [\\\"Op_RightStickRight\\\", false],\\n    [\\\"Op_RightStickLeft\\\", true]\\n  ]\\n}\"\n    },\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Enter Left State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Enter Left State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_RightStickDown\\\", false],\\n    [\\\"Op_RightStickUp\\\", false],\\n    [\\\"Op_RightStickRight\\\", false],\\n    [\\\"Op_RightStickLeft\\\", true]\\n  ]\\n}\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"AND\": [\n    [\"Op_RightStickDown\", false],\n    [\"Op_RightStickUp\", false],\n    [\"Op_RightStickRight\", false],\n    [\"Op_RightStickLeft\", true]\n  ]\n}",
@@ -9516,8 +9518,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    [\\\"Op_RightStickRight\\\", true],\\n    [\\\"Op_RightStickDown\\\", true],\\n    [\\\"Op_RightStickUp\\\", true]\\n  ]\\n}\\n\"\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Exit Left State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Exit Left State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    [\\\"Op_RightStickRight\\\", true],\\n    [\\\"Op_RightStickDown\\\", true],\\n    [\\\"Op_RightStickUp\\\", true]\\n  ]\\n}\\n\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"OR\": [\n    [\"Op_RightStickRight\", true],\n    [\"Op_RightStickDown\", true],\n    [\"Op_RightStickUp\", true]\n  ]\n}\n",
@@ -9549,8 +9551,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_RightStickDown\\\", true],\\n    [\\\"Op_RightStickUp\\\", false],\\n    [\\\"Op_RightStickRight\\\", false],\\n    [\\\"Op_RightStickLeft\\\", true]\\n  ]\\n}\"\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Enter Down Left State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Enter Down Left State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"AND\\\": [\\n    [\\\"Op_RightStickDown\\\", true],\\n    [\\\"Op_RightStickUp\\\", false],\\n    [\\\"Op_RightStickRight\\\", false],\\n    [\\\"Op_RightStickLeft\\\", true]\\n  ]\\n}\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"AND\": [\n    [\"Op_RightStickDown\", true],\n    [\"Op_RightStickUp\", false],\n    [\"Op_RightStickRight\", false],\n    [\"Op_RightStickLeft\", true]\n  ]\n}",
@@ -9635,8 +9637,8 @@
 	"condAnd": true,
 	"notFlag": false,
 	"custom": {
-	"customId": 8177408,
-	"valueJson": "[\n    {\n        \"id\": 8177410,\n        \"value\": 1\n    },\n    {\n        \"id\": 8177409,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_RightStickDown\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_RightStickRight\\\", true],\\n            [\\\"Op_RightStickUp\\\", true],\\n            [\\\"Op_RightStickLeft\\\", true]\\n          ]\\n        }\\n      ]\\n    },\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_RightStickLeft\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_RightStickDown\\\", true],\\n            [\\\"Op_RightStickUp\\\", true],\\n            [\\\"Op_RightStickRight\\\", true]\\n          ]\\n        }\\n      ]\\n    }\\n  ]\\n}\"\n    },\n    {\n        \"id\": 8177411,\n        \"value\": \"Exit Down Left State\"\n    }\n]\n"
+	"customId": 1,
+	"valueJson": "[\n    {\n        \"id\": 3,\n        \"value\": \"Exit Down Left State\"\n    },\n    {\n        \"id\": 2,\n        \"value\": 2\n    },\n    {\n        \"id\": 1,\n        \"value\": \"{\\n  \\\"OR\\\": [\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_RightStickDown\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_RightStickRight\\\", true],\\n            [\\\"Op_RightStickUp\\\", true],\\n            [\\\"Op_RightStickLeft\\\", true]\\n          ]\\n        }\\n      ]\\n    },\\n    {\\n      \\\"AND\\\": [\\n        [\\\"Op_RightStickLeft\\\", false],\\n        {\\n          \\\"OR\\\": [\\n            [\\\"Op_RightStickDown\\\", true],\\n            [\\\"Op_RightStickUp\\\", true],\\n            [\\\"Op_RightStickRight\\\", true]\\n          ]\\n        }\\n      ]\\n    }\\n  ]\\n}\"\n    }\n]\n"
 }
 } ],
 	"memo": "{\n  \"OR\": [\n    {\n      \"AND\": [\n        [\"Op_RightStickDown\", false],\n        {\n          \"OR\": [\n            [\"Op_RightStickRight\", true],\n            [\"Op_RightStickUp\", true],\n            [\"Op_RightStickLeft\", true]\n          ]\n        }\n      ]\n    },\n    {\n      \"AND\": [\n        [\"Op_RightStickLeft\", false],\n        {\n          \"OR\": [\n            [\"Op_RightStickDown\", true],\n            [\"Op_RightStickUp\", true],\n            [\"Op_RightStickRight\", true]\n          ]\n        }\n      ]\n    }\n  ]\n}",
@@ -9656,9 +9658,9 @@
 	"b": 0,
 	"actionIdList": [ 2, 5, 6, 7, 8, 9, 10, 11 ],
 	"x": -576,
-	"y": 336,
+	"y": 337,
 	"width": 1160,
-	"height": 363,
+	"height": 362,
 	"collapsed": false
 },
 					"aroundCharacterViewSettingFlag": false,
@@ -12372,87 +12374,6 @@
 	"gridMagnet": true,
 	"actionIconHide": true,
 	"memo": ""
-}
-,
-	"transitionFlow": {
-	"flowScreenList": [ {
-	"id": 1,
-	"scene": true,
-	"sceneMenuId": -1,
-	"x": 24,
-	"y": 24,
-	"width": 144,
-	"height": 48,
-	"shortcutList": [],
-	"a": -1,
-	"r": -1,
-	"g": -1,
-	"b": -1
-}, {
-	"id": 2,
-	"scene": true,
-	"sceneMenuId": 1,
-	"x": 216,
-	"y": 120,
-	"width": 144,
-	"height": 48,
-	"shortcutList": [],
-	"a": -1,
-	"r": -1,
-	"g": -1,
-	"b": -1
-} ],
-	"flowLinkList": [ {
-	"id": 1,
-	"typeIdPair": [ [0, 1, -1], [0, 2, -1] ],
-	"linkType": 0,
-	"priority": 0,
-	"startPointGroup": 0,
-	"changeConditionType": 1,
-	"noInput": true,
-	"useInput": true,
-	"inputConditionList": [  ],
-	"sceneTerminated": false,
-	"timeElapsed": false,
-	"timeElapsed300": 0,
-	"switchVariableChanged": false,
-	"switchVariableConditionList": [  ],
-	"memo": "",
-	"preMoveEffect": 0,
-	"preMoveDuration300": 300,
-	"preMoveBgmChangeType": 0,
-	"preMoveBgmFadeout": false,
-	"preMoveBgmId": -1,
-	"preMoveBgmLoop": false,
-	"preMoveBgmChangeTiming": 0,
-	"preMovePlaySe": false,
-	"preMoveSeId": -1,
-	"postMoveEffect": 0,
-	"postMoveDuration300": 300,
-	"postMoveBgmChangeType": 2,
-	"postMoveBgmFadeout": false,
-	"postMoveBgmId": -1,
-	"postMoveBgmLoop": false,
-	"postMoveBgmChangeTiming": 0,
-	"postMovePlaySe": false,
-	"postMoveSeId": -1,
-	"postMoveChangeSwitchVariable": false,
-	"postMoveSwitchVariableAssignList": [  ],
-	"postMoveExecuteObjectAction": false,
-	"postMoveObjectActionList": [  ],
-	"coordList": [ [ 143, 71 ], [ 240, 120 ] ],
-	"endPointFactor": [ -1, -1 ],
-	"visible": true,
-	"num": 0,
-	"a": -1,
-	"r": -1,
-	"g": -1,
-	"b": -1,
-	"flowLinkIdList": [  ]
-} ],
-	"flowGroupList": [  ],
-"transitionLinkPaletteList": [],
-"transitionScreenPaletteList": []
 }
 ,
 	"animParticleImageList": [  ]
