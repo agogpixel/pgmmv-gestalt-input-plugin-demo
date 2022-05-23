@@ -1609,7 +1609,7 @@ function removeComma(str, newline) {
         tempArr = str.split('');
     }
     else {
-        tempArr = str.trimEnd().split('');
+        tempArr = str.trimRight().split('');
     }
     tempArr.pop();
     return tempArr.join('') + (newline ? '\n' : '');
